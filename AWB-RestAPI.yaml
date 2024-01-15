@@ -15,26 +15,30 @@ info:
 
 # Servers
 servers:
-- url: https://localhost:8080/api
-  description: AWB-Embedded System
-- url: https://virtserver.swaggerhub.com/EnFlex.IT/AWB-Rest/1.0.0
-  description: SwaggerHub API Auto Mocking
+  - url: https://localhost:8080/api
+    description: AWB-Embedded System
+  - url: https://virtserver.swaggerhub.com/EnFlex.IT/AWB-Rest/1.0.0
+    description: SwaggerHub API Auto Mocking
+  - url: http://localhost:8080/
+    description: Nico Hubrach local dev server
 
 # Security
 security:
-- AwbApiKey: []
+  - AwbApiKey: []
 
-# Tags to classifiy / organize paths 
+# Tags to classifiy / organize paths
 tags:
-- name: admins
-  description: Secured Admin-only calls
-  
+  - name: admins
+    description: Secured Admin-only calls
+  - name: authentication
+    description: Calls for authenticating users, e.g. jwt, credentials
+
 # The paths of a REST-API
 paths:
   /info:
     get:
       tags:
-      - admins
+        - admins
       summary: Returns system information
       description: |
         Returns Hardware and system  inforamtion.
@@ -45,14 +49,14 @@ paths:
         "200":
           description: AWB-State
           content:
-            applicaion/json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/SystemInformation'
-      
+                $ref: "#/components/schemas/SystemInformation"
+
   /state:
     get:
       tags:
-      - admins
+        - admins
       summary: Returns the current AWB state
       description: |
         Returns the current state of Agent.Workbench consisiting information  about the execution mode, the currently open project and other.
@@ -63,13 +67,14 @@ paths:
         "200":
           description: AWB-State
           content:
-            applicaion/json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/ExecutionState'
+                $ref: "#/components/schemas/ExecutionState"
+
   /load:
     get:
       tags:
-      - admins
+        - admins
       summary: Returns the current System load
       description: |
         Returns the current system load measured by Agent.Workbench that includes CPU-, memory- and Java Heap - load. Further, the number of threads and agents will be returnes
@@ -77,9 +82,52 @@ paths:
         "200":
           description: System Load
           content:
-            applicaion/json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/SystemLoad'
+                $ref: "#/components/schemas/SystemLoad"
+
+  /login:
+    post:
+      tags:
+        - authentication
+      summary: checks credentials and returns jwt
+      description: |
+        Checks wether the given credentials match any users in the database and returns a jwt which encapsulates all of the users rights
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Credentials"
+      responses:
+        "200":
+          description: The Credentials matched a user in the database and therefore the login was successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JWT"
+        "401":
+          description: The Credentials did not match any users in the database. The Credentials were wrongs
+
+  # This Endpoint could later be expanded to check not only if a jwt is valid but also if a jwt has a claim over some rights
+  /validate:
+    post:
+      tags:
+        - authentication
+      summary: Checks if a jwt is valid
+      description: Validates the integrity of a jwt by checking the signature and its expiration time
+      requestBody:
+        description: this is the jwt that will be validated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JWT"
+      responses:
+        "200":
+          description: the jwt is valid
+        "401":
+          description: the jwt is not valid
 
 # Component definition such as schemas, securitySchemes and so on
 components:
@@ -99,13 +147,13 @@ components:
         processorName:
           type: string
         processorFrequenceInMhz:
-          type: number 
+          type: number
           format: double
         processorNoPhysical:
           type: integer
-          format: int32        
+          format: int32
         processorNoLogical:
-          type: integer 
+          type: integer
           format: int32
         memoryTotalInGB:
           type: number
@@ -119,32 +167,32 @@ components:
         networkConnections:
           type: array
           items:
-            $ref: "#/components/schemas/NetworkConnection"  
+            $ref: "#/components/schemas/NetworkConnection"
       description: The system information consisting of Hardware and OS information
-    
+
     # NetworkConnection
     NetworkConnection:
       type: object
       description: Describes a single network connection.
       properties:
-          name:
-            type: string
-          displayName:
-            type: string
-          macAddress:
-            type: string
-          ip4Addresses:
-            type: string
-          ip6Addresses:
-            type: string
-          trafficSendInMB:
-            type: number
-            format: double
-          trafficReceivedInMB:
-            type: number
-            format: double
-            
-    # Type ExecutionState 
+        name:
+          type: string
+        displayName:
+          type: string
+        macAddress:
+          type: string
+        ip4Addresses:
+          type: string
+        ip6Addresses:
+          type: string
+        trafficSendInMB:
+          type: number
+          format: double
+        trafficReceivedInMB:
+          type: number
+          format: double
+
+    # Type ExecutionState
     ExecutionState:
       type: object
       properties:
@@ -153,20 +201,20 @@ components:
           description: |
             * 'APPLICATION' - Runs as end user application in an desktop environment * 'SERVER' - Runs as Background server-system * 'SERVER_MASTER' - Runs as central 'server. master' system and manages all 'server.slave' systems * 'SERVER_SLAVE' - Runs as central 'server. slave' system and wait for start order from the 'server.master' * 'DEVICE_SYSTEM' - Runs as system that directly executes single agents or projects
           enum:
-          - APPLICATION
-          - SERVER
-          - SERVER_MASTER
-          - SERVER_SLAVE
-          - DEVICE_SYSTEM
+            - APPLICATION
+            - SERVER
+            - SERVER_MASTER
+            - SERVER_SLAVE
+            - DEVICE_SYSTEM
         deviceSystemExecutionMode:
           type: string
           description: |
             * 'SETUP' - Runs the selected setup of an AWB projekt * 'AGENT' - Runs one or more agents from an AWB project
           enum:
-          - SETUP
-          - AGENT
+            - SETUP
+            - AGENT
       description: The Agent.Workbench execution state
-    
+
     # Type SystemLoad
     SystemLoad:
       type: object
@@ -184,10 +232,35 @@ components:
           format: float
           description: The Heap usage in percen
       description: The systems current load, includung CPU, memoryand HEAP  usage. Further, the number of Java threads are returned.
-  
+
+    # type JWT
+    JWT:
+      type: object
+      properties:
+        jwt:
+          type: string
+          description: jwt in XXX.YYY.ZZZ format
+      description: the jwt which needs to be validated,
+      required:
+        - "jwt"
+
+    # type Credentials
+    Credentials:
+      type: object
+      properties:
+        username:
+          type: string
+          description: username as plain string
+        password:
+          type: string
+          description: password in plain text
+      description: the username of the user, the password of the user
+      required:
+        - "username"
+        - "password"
+
   securitySchemes:
     AwbApiKey:
       type: apiKey
       name: X-API-KEY
       in: header
-  
