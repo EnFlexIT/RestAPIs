@@ -129,6 +129,26 @@ paths:
         "401":
           description: the jwt is not valid
 
+  /changepwd:
+    post:
+      tags:
+        - authentication
+      summary: Changes the password of an account
+      description:  |
+        Checks wether the given Credentials match the provided jwt. If they do, change the password of the respective account to the new password. This ensures that nobody can change a password if they get hold of the jwt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordRequest"
+      responses:
+        "200":
+          description: The Request was successful. Credentials did match the jwt and the password has been altered in the database
+        "403":
+          description: The Request was not successful. Credentials did not match the jwt. The Databse wasnt changed
+        "503":
+          description: The Request was not successful. Credentials did match the jwt but the Database wasnt altered.
+
 # Component definition such as schemas, securitySchemes and so on
 components:
   schemas:
@@ -258,6 +278,18 @@ components:
       required:
         - "username"
         - "password"
+
+    ChangePasswordRequest:
+      type: object
+      description: The provided credentials need to match the jwt
+      properties:
+        credentials:
+          $ref: "#/components/schemas/Credentials"
+        jwt:
+          $ref: "#/components/schemas/JWT"
+      required:
+        - "credentials"
+        - "jwt"
 
   securitySchemes:
     AwbApiKey:
