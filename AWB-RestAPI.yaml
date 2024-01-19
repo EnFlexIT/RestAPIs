@@ -137,6 +137,7 @@ paths:
       description:  |
         Checks wether the given Credentials match the provided jwt. If they do, change the password of the respective account to the new password. This ensures that nobody can change a password if they get hold of the jwt
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -281,15 +282,19 @@ components:
 
     ChangePasswordRequest:
       type: object
-      description: The provided credentials need to match the jwt
+      description: The provided credentials which need to match the jwt. The new password
       properties:
         credentials:
           $ref: "#/components/schemas/Credentials"
         jwt:
           $ref: "#/components/schemas/JWT"
+        newPassword:
+          type: string
+          description: The new password of the account as plain string
       required:
         - "credentials"
         - "jwt"
+        - "newPassword"
 
   securitySchemes:
     AwbApiKey:
