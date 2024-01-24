@@ -1,0 +1,138 @@
+---
+openapi: 3.0.0
+# General Information
+info:
+  title: Agent.Workbench REST - API
+  description: This is the REST-API for Agent.Workbench for authenticating users
+  contact:
+    name: EnFlex.IT
+    url: https://www.enflex.it
+    email: admin@enflex.it
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+# Servers
+servers:
+  - url: https://localhost:8080/api
+    description: AWB-Embedded System
+
+# Tags to classifiy / organize paths
+tags:
+  - name: authentication
+    description: Calls for authenticating users, e.g. jwt, credentials
+  - name: unprotected
+    description: Calls that are not protected by a password or something alike
+
+# The paths of a REST-API
+paths:
+  /login:
+    post:
+      tags:
+        - authentication
+        - unprotected
+      summary: checks credentials and returns jwt
+      description: |
+        Checks wether the given credentials match any users in the database and returns a jwt which encapsulates all of the users rights
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Credentials"
+      responses:
+        "200":
+          description: The Credentials matched a user in the database and therefore the login was successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JWT"
+        "401":
+          description: The Credentials did not match any users in the database. The Credentials were wrongs
+
+  # This Endpoint could later be expanded to check not only if a jwt is valid but also if a jwt has a claim over some rights
+  /validate:
+    post:
+      tags:
+        - authentication
+      summary: Checks if a jwt is valid
+      description: Validates the integrity of a jwt by checking the signature and its expiration time
+      requestBody:
+        description: this is the jwt that will be validated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JWT"
+      responses:
+        "200":
+          description: the jwt is valid
+        "401":
+          description: the jwt is not valid
+
+  /changepwd:
+    post:
+      tags:
+        - authentication
+      summary: Changes the password of an account
+      description:  |
+        Checks wether the given Credentials match the provided jwt. If they do, change the password of the respective account to the new password. This ensures that nobody can change a password if they get hold of the jwt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordRequest"
+      responses:
+        "200":
+          description: The Request was successful. Credentials did match the jwt and the password has been altered in the database
+        "403":
+          description: The Request was not successful. Credentials did not match the jwt. The Databse wasnt changed
+        "503":
+          description: The Request was not successful. Credentials did match the jwt but the Database wasnt altered.
+
+# Component definition such as schemas, securitySchemes and so on
+components:
+  schemas:
+    # type JWT
+    JWT:
+      type: object
+      properties:
+        jwt:
+          type: string
+          description: jwt in XXX.YYY.ZZZ format
+      description: the jwt which needs to be validated,
+      required:
+        - "jwt"
+
+    # type Credentials
+    Credentials:
+      type: object
+      properties:
+        username:
+          type: string
+          description: username as plain string
+        password:
+          type: string
+          description: password in plain text
+      description: the username of the user, the password of the user
+      required:
+        - "username"
+        - "password"
+
+    ChangePasswordRequest:
+      type: object
+      description: The provided credentials which need to match the jwt. The new password
+      properties:
+        credentials:
+          $ref: "#/components/schemas/Credentials"
+        jwt:
+          $ref: "#/components/schemas/JWT"
+        newPassword:
+          type: string
+          description: The new password of the account as plain string
+      required:
+        - "credentials"
+        - "jwt"
+        - "newPassword"
