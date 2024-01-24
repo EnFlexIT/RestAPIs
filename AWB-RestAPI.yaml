@@ -22,7 +22,7 @@ servers:
 
 # Security
 security:
-  - AwbApiKey: []
+  - BearerAuth: []
 
 # Tags to classifiy / organize paths
 tags:
@@ -191,3 +191,8 @@ components:
       type: apiKey
       name: X-API-KEY
       in: header
+
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
