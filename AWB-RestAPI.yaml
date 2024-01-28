@@ -122,7 +122,19 @@ components:
           items:
             $ref: "#/components/schemas/NetworkConnection"
       description: The system information consisting of Hardware and OS information
-
+      required:
+        - "osDescription"
+        - "osManufacturer"
+        - "osFamilly"
+        - "osVersion"
+        - "processorName"
+        - "processorFrequenceInMhz"
+        - "processorNoPhysical"
+        - "processorNoLogical"
+        - "memoryTotalInGB"
+        - "swapMemoryTotalInGB"
+        - "heapMemoryMaxInGB"
+        - "networkConnections"
     # NetworkConnection
     NetworkConnection:
       type: object
@@ -144,6 +156,7 @@ components:
         trafficReceivedInMB:
           type: number
           format: double
+      required: [name, displayName, macAddress, ip4Addresses, ip6Addresses, trafficSendInMB, trafficReceivedInMB]
 
     # Type ExecutionState
     ExecutionState:
