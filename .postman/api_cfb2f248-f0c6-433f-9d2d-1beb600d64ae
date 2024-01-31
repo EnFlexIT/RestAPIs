@@ -14,8 +14,6 @@ files[] = {"id":"20513258-7b530069-76ff-4c30-a555-58d3c1684f7a","path":"Test-Cal
 [config.relations.collections.metaData]
 
 [config.relations.apiDefinition]
-files[] = {"path":"AWB-RestAPI.yaml","metaData":{}}
 
 [config.relations.apiDefinition.metaData]
 type = openapi:3
-rootFiles[] = AWB-RestAPI.yaml
