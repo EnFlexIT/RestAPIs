@@ -1,0 +1,538 @@
+{
+	"info": {
+		"_postman_id": "7b530069-76ff-4c30-a555-58d3c1684f7a",
+		"name": "Test-Calls",
+		"description": "This is the REST-API for Agent.Workbench in an embbedded system mode.\n\nContact Support:\n Name: EnFlex.IT\n Email: admin@enflex.it",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "20513258-7b530069-76ff-4c30-a555-58d3c1684f7a"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "login",
+					"item": [
+						{
+							"name": "Logs user into the system",
+							"id": "09a4c3c3-fd3a-43a8-a064-9e84acbe5228",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": [
+								{
+									"id": "f8c2294f-83aa-495d-bec0-633650ed7c63",
+									"name": "successfully logged-in",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/user/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"example\": {\n    \"token\": \"{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}\"\n  }\n}"
+								},
+								{
+									"id": "2e03f98b-3e1d-4163-9de5-680cc00c6756",
+									"name": "Invalid username/password supplied",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/user/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"login"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": []
+								}
+							]
+						}
+					],
+					"id": "f16a5b95-4d9e-41f6-8835-99f7b3d95132"
+				},
+				{
+					"name": "pswd-change",
+					"item": [
+						{
+							"name": "Changes the user password",
+							"id": "79b1f036-9f96-4891-94ec-cfe7a1313fe6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"password_old\": \"<string>\",\n  \"password_new\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/pswd-change",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"pswd-change"
+									]
+								}
+							},
+							"response": [
+								{
+									"id": "e342742d-744c-4816-b8f7-125bf1b073a8",
+									"name": "successfully logged-in",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"password_old\": \"<string>\",\n  \"password_new\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/user/pswd-change",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"pswd-change"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"example\": {\n    \"token\": \"{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}\"\n  }\n}"
+								},
+								{
+									"id": "dea362be-7255-4f69-8172-310eaee12df1",
+									"name": "Invalid username/password supplied",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"password_old\": \"<string>\",\n  \"password_new\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/user/pswd-change",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"pswd-change"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": []
+								}
+							]
+						}
+					],
+					"id": "c78c49c8-c650-4e2f-a3fe-57792e40f111"
+				}
+			],
+			"id": "92b8c4c8-7eed-4de7-b439-58c88018c59c"
+		},
+		{
+			"name": "info",
+			"item": [
+				{
+					"name": "Returns system information",
+					"id": "1e5d9b5c-7343-4998-91a3-53b1fb013c37",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/info",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"info"
+							]
+						},
+						"description": "Returns Hardware and system  inforamtion.\n"
+					},
+					"response": [
+						{
+							"id": "74769678-4a75-45b6-afbf-992892eee85a",
+							"name": "AWB-State",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/info",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"info"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"osDescription\": \"<string>\",\n  \"osManufacturer\": \"<string>\",\n  \"osFamilly\": \"<string>\",\n  \"osVersion\": \"<string>\",\n  \"processorName\": \"<string>\",\n  \"processorFrequenceInMhz\": \"<double>\",\n  \"processorNoPhysical\": \"<integer>\",\n  \"processorNoLogical\": \"<integer>\",\n  \"memoryTotalInGB\": \"<double>\",\n  \"swapMemoryTotalInGB\": \"<double>\",\n  \"heapMemoryMaxInGB\": \"<double>\",\n  \"networkConnections\": [\n    {\n      \"name\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"macAddress\": \"<string>\",\n      \"ip4Addresses\": \"<string>\",\n      \"ip6Addresses\": \"<string>\",\n      \"trafficSendInMB\": \"<double>\",\n      \"trafficReceivedInMB\": \"<double>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"macAddress\": \"<string>\",\n      \"ip4Addresses\": \"<string>\",\n      \"ip6Addresses\": \"<string>\",\n      \"trafficSendInMB\": \"<double>\",\n      \"trafficReceivedInMB\": \"<double>\"\n    }\n  ]\n}"
+						}
+					]
+				}
+			],
+			"id": "0e20a0a1-bbe6-4732-b8c9-c5fcc91fc3a0"
+		},
+		{
+			"name": "state",
+			"item": [
+				{
+					"name": "Returns the current AWB state",
+					"id": "9f489585-0359-4625-a093-e19d91385fbe",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/state",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"state"
+							]
+						},
+						"description": "Returns the current state of Agent.Workbench consisiting information  about the execution mode, the currently open project and other.\n"
+					},
+					"response": [
+						{
+							"id": "afbf5630-7762-4aae-a77b-abeb0cdf18b3",
+							"name": "AWB-State",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/state",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"state"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"executionMode\": \"SERVER_MASTER\",\n  \"deviceSystemExecutionMode\": \"AGENT\"\n}"
+						}
+					]
+				}
+			],
+			"id": "00535c15-b320-4c25-8bb8-c9650df61c5b"
+		},
+		{
+			"name": "load",
+			"item": [
+				{
+					"name": "Returns the current System load",
+					"id": "cbfe14ee-9d1d-4e12-847d-e878b1044cac",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/load",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"load"
+							]
+						},
+						"description": "Returns the current system load measured by Agent.Workbench that includes CPU-, memory- and Java Heap - load. Further, the number of threads and agents will be returnes\n"
+					},
+					"response": [
+						{
+							"id": "4d2376a4-a734-497a-862c-df3c8b8714fa",
+							"name": "System Load",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/load",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"load"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"cpuUsage\": \"<float>\",\n  \"memUsage\": \"<float>\",\n  \"heapUsage\": \"<float>\"\n}"
+						}
+					]
+				}
+			],
+			"id": "57bb227d-25c8-4824-b8f8-57294ab10600"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"id": "aa79f638-416f-4ee5-81d2-74daf50e09b9",
+			"key": "baseUrl",
+			"value": "https://localhost:8080/api"
+		}
+	]
+}
