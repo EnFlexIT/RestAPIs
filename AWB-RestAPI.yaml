@@ -17,8 +17,6 @@ info:
 servers:
   - url: https://localhost:8080/api
     description: AWB-Embedded System
-  - url: https://virtserver.swaggerhub.com/EnFlex.IT/AWB-Rest/1.0.0
-    description: SwaggerHub API Auto Mocking
 
 # Security
 security:
@@ -31,6 +29,65 @@ tags:
 
 # The paths of a REST-API
 paths:
+
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: Logs user into the system
+      description: ''
+      operationId: loginUser
+      requestBody:
+        description: The credentials to login.
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+            examples:
+              user:
+                summary: Login credentials example
+                value:
+                  username: valid.user@server.com
+                  password: testpass
+      responses:
+        '200':
+          description: successfully logged-in
+          content:
+            'application/json':
+              example:
+                token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
+        default:
+          description: Invalid username/password supplied
+          
+  /user/pswd-change:
+    post:
+      tags:
+        - user
+      summary: Changes the user password
+      description: ''
+      operationId: changePassword
+      requestBody:
+        description: The credentials to login.
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+            examples:
+              PasswordChange:
+                summary: Login credentials example
+                value:
+                  password_old: testpass-old
+                  password_new: testpass-new
+      responses:
+        '200':
+          description: successfully logged-in
+          content:
+            'application/json':
+              example:
+                token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
+        default:
+          description: Invalid username/password supplied
+          
   /info:
     get:
       tags:
@@ -85,6 +142,34 @@ paths:
 # Component definition such as schemas, securitySchemes and so on
 components:
   schemas:
+  
+    # Type UserLogin
+    UserLogin:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+
+    # Type PasswordChange
+    PasswordChange:
+      type: object
+      required:
+        - password_old
+        - password_new
+      properties:
+        password_old:
+          type: string
+          format: password
+        password_new:
+          type: string
+          format: password
+          
     # Type SystemInformation
     SystemInformation:
       type: object
