@@ -33,7 +33,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+									"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"test\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -528,9 +528,31 @@
 			}
 		]
 	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1b0cc8a4-2848-4f0b-9249-ec5a6d1849fd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "213a7f66-97a4-4c89-ab89-43825ff088d3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
-			"id": "aa79f638-416f-4ee5-81d2-74daf50e09b9",
+			"id": "0e2edc1f-30e3-4f38-800f-cdaf0057eedf",
 			"key": "baseUrl",
 			"value": "https://localhost:8080/api"
 		}

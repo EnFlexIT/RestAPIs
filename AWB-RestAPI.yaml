@@ -106,7 +106,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SystemInformation"
 
-  /state:
+  /executionState:
     get:
       tags:
         - admins
