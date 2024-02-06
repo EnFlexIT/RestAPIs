@@ -215,9 +215,8 @@ paths:
               schema:
                 description: holds as many logs as specified to the call
                 type: array
-                default: 10
-                minimum: 1
-                maximum: 100
+                minItems: 1
+                maxItems: 100
                 items:
                   $ref: '#/components/schemas/Event'
 
@@ -225,7 +224,7 @@ paths:
     post:
       description: tries to initiate update of awb
       tags:
-        - doUpdate
+        - doAction
       responses:
         "423": #Locked
           description: AWB cant currently be updated due to unknown circumstances
@@ -236,7 +235,7 @@ paths:
     post:
       description: tries to shedule restart
       tags:
-        - doUpdate
+        - doAction
       responses:
         "423":
           description: Restart could not be initiated
@@ -444,7 +443,7 @@ components:
         time:
           description: The time at which the event happened
           type: string
-        type:
+        typeOfEvent:
           description: the type of event that occured
           $ref: '#/components/schemas/EventLogTypes'
         event:
