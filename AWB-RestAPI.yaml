@@ -26,6 +26,12 @@ security:
 tags:
   - name: admins
     description: Secured Admin-only calls
+  - name: user
+    description: User related calls like authentication or changing user preferences
+  - name: info
+    description: Calls that expose some kind of Information about the AWB
+  - name: doAction
+    description: Some form of Action that takes place inside of awb. e.g. restart, update
 
 # The paths of a REST-API
 paths:
@@ -138,6 +144,104 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SystemLoad"
+
+  /version:
+    get:
+      tags:
+        - info
+      summary: Return most up to date version number
+      responses:
+        "200":
+          description: Request was successful and user receives versionNumber
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Version'
+
+  /installationDetails:
+    get:
+      tags:
+        - info
+      summary: Get the details about an AWB Installation
+      responses:
+        "200":
+          description: Return the Details about an AWB Installtion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BundleInformation'
+  
+  /isUpdateAvailable:
+    get:
+      tags:
+        - info
+      summary: Checks wether an update for the AWB is available or not
+      responses:
+        "200":
+          description: request successful. boolean in response indicates wether update is available or not
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/isUpdateAvailable'
+
+  /eventLog:
+    get:
+      summary: get logs of specific type
+      tags:
+        - info
+      parameters:
+        - in: query
+          name: amount
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+          description: the maximum number of logs to retrieve. If no number is specified the default is 10
+          required: false
+        - in: query
+          name: type
+          schema:
+            $ref: '#/components/schemas/EventLogTypes'
+          description: The type which is retrieved by awb
+          required: true
+      responses:
+        "200":
+          description: Return Logs of specified type
+          content:
+            application/json:
+              schema:
+                description: holds as many logs as specified to the call
+                type: array
+                default: 10
+                minimum: 1
+                maximum: 100
+                items:
+                  $ref: '#/components/schemas/Event'
+
+  /doUpdate:
+    post:
+      description: tries to initiate update of awb
+      tags:
+        - doUpdate
+      responses:
+        "423": #Locked
+          description: AWB cant currently be updated due to unknown circumstances
+        "200":
+          description: AWB Update was sheduled. The state of the update can be received by calling /eventLog
+
+  /doRestart:
+    post:
+      description: tries to shedule restart
+      tags:
+        - doUpdate
+      responses:
+        "423":
+          description: Restart could not be initiated
+        "200":
+          description: Restart will happen. History can be accessed via eventLog
 
 # Component definition such as schemas, securitySchemes and so on
 components:
@@ -283,6 +387,88 @@ components:
           format: float
           description: The Heap usage in percen
       description: The systems current load, includung CPU, memoryand HEAP  usage. Further, the number of Java threads are returned.
+      required:
+        - "cpuUsage"
+        - "memUsage"
+        - "heapUsage"
+
+    # Version
+    Version:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+          description: the version number
+      description: Object that holds Version Information. Is Object for scalability
+      required:
+        - "versionNumber"
+
+    BundleInformation:
+      type: object
+      description: Contains Information about one singular Bundle
+      properties:
+        FeatureName:
+          type: string
+        Provider:
+          type: string
+        BundleName:
+          type: string
+        BundleID:
+          type: number
+        Version:
+          $ref: '#/components/schemas/Version'
+      required:
+        - "FeatureName"
+        - "Provider"
+        - "BundleName"
+        - "BundleID"
+        - "Version"
+
+    isUpdateAvailable:
+      type: boolean
+      description: checks if an update for the AWB is available
+
+    EventLogTypes:
+      description: The different types of EventLogs
+      type: string
+      enum:
+        - AWB
+        - Project
+        - Setup
+        - Agent
+
+    Event:
+      description: An Event that occured and can be logged
+      type: object
+      properties:
+        time:
+          description: The time at which the event happened
+          type: string
+        type:
+          description: the type of event that occured
+          $ref: '#/components/schemas/EventLogTypes'
+        event:
+          description: the event that has happened
+          type: string
+          enum:
+            - "Running"
+            - "Starting"
+            - "Open Project"
+            - "Starting Agent System"
+
+            - "Update Sheduled"
+            - "Update Executed"
+            - "Update Failure"
+            - "Update in Progess"
+
+            - "Restart Sheduled"
+            - "Restart Executed"
+            - "Restart Failure"
+            - "Restart in Progess"
+      required:
+        - "time"
+        - "type"
+        - "event"
 
   securitySchemes:
     AwbApiKey:
