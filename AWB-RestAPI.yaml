@@ -20,7 +20,7 @@ servers:
 
 # Security
 security:
-  - BearerAuth: []
+  - bearerAuth: []
 
 # Tags to classifiy / organize paths
 tags:
@@ -37,31 +37,21 @@ tags:
 paths:
 
   /user/login:
-    post:
+    get:
       tags:
         - user
       summary: Logs user into the system
-      description: ''
+      description: 'Does NOT use Bearer Auth like whole other application. Only Endpoint that uses Basic Authentication. Expects previously configured Credentials and returns appropriate Bearer Token'
       operationId: loginUser
-      requestBody:
-        description: The credentials to login.
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/UserLogin'
-            examples:
-              user:
-                summary: Login credentials example
-                value:
-                  username: valid.user@server.com
-                  password: testpass
+      security:
+        - basicAuth: []
       responses:
         '200':
           description: successfully logged-in
           content:
             'application/json':
-              example:
-                token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
+              schema:
+                $ref: '#/components/schemas/Jwt'
         default:
           description: Invalid username/password supplied
           
@@ -245,19 +235,10 @@ paths:
 # Component definition such as schemas, securitySchemes and so on
 components:
   schemas:
-  
-    # Type UserLogin
-    UserLogin:
-      type: object
-      required:
-        - username
-        - password
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-          format: password
+    # Type Jwt
+    Jwt:
+      type: string
+      description: Mandatory for every auth call that uses bearer auth
 
     # Type PasswordChange
     PasswordChange:
@@ -470,12 +451,11 @@ components:
         - "event"
 
   securitySchemes:
-    AwbApiKey:
-      type: apiKey
-      name: X-API-KEY
-      in: header
-
-    BearerAuth:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      bearerFormat: JW
+
+    basicAuth:
+      type: http
+      scheme: basic
