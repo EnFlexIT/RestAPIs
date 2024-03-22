@@ -35,39 +35,38 @@ tags:
 
 # The paths of a REST-API
 paths:
-
   /user/login:
     get:
       tags:
         - user
       summary: Logs user into the system
-      description: 'Does NOT use Bearer Auth like whole other application. Only Endpoint that uses Basic Authentication. Expects previously configured Credentials and returns appropriate Bearer Token'
+      description: "Does NOT use Bearer Auth like whole other application. Only Endpoint that uses Basic Authentication. Expects previously configured Credentials and returns appropriate Bearer Token"
       operationId: loginUser
       security:
         - basicAuth: []
       responses:
-        '200':
+        "200":
           description: successfully logged-in
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/Jwt'
+                $ref: "#/components/schemas/Jwt"
         default:
           description: Invalid username/password supplied
-          
+
   /user/pswd-change:
     post:
       tags:
         - user
       summary: Changes the user password
-      description: ''
+      description: ""
       operationId: changePassword
       requestBody:
         description: The credentials to login.
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/PasswordChange'
+              $ref: "#/components/schemas/PasswordChange"
             examples:
               PasswordChange:
                 summary: Login credentials example
@@ -75,15 +74,15 @@ paths:
                   password_old: testpass-old
                   password_new: testpass-new
       responses:
-        '200':
+        "200":
           description: successfully logged-in
           content:
-            'application/json':
+            "application/json":
               example:
                 token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
         default:
           description: Invalid username/password supplied
-          
+
   /info:
     get:
       tags:
@@ -146,7 +145,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Version'
+                $ref: "#/components/schemas/Version"
 
   /installationDetails:
     get:
@@ -161,8 +160,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BundleInformation'
-  
+                  $ref: "#/components/schemas/BundleInformation"
+
   /isUpdateAvailable:
     get:
       tags:
@@ -174,7 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/isUpdateAvailable'
+                $ref: "#/components/schemas/isUpdateAvailable"
 
   /eventLog:
     get:
@@ -194,7 +193,7 @@ paths:
         - in: query
           name: type
           schema:
-            $ref: '#/components/schemas/EventLogTypes'
+            $ref: "#/components/schemas/EventLogTypes"
           description: The type which is retrieved by awb
           required: true
       responses:
@@ -208,7 +207,7 @@ paths:
                 minItems: 1
                 maxItems: 100
                 items:
-                  $ref: '#/components/schemas/Event'
+                  $ref: "#/components/schemas/Event"
 
   /doUpdate:
     post:
@@ -239,6 +238,8 @@ components:
     Jwt:
       type: string
       description: Mandatory for every auth call that uses bearer auth
+      example:
+        token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
 
     # Type PasswordChange
     PasswordChange:
@@ -253,7 +254,7 @@ components:
         password_new:
           type: string
           format: password
-          
+
     # Type SystemInformation
     SystemInformation:
       type: object
@@ -325,7 +326,16 @@ components:
         trafficReceivedInMB:
           type: number
           format: double
-      required: [name, displayName, macAddress, ip4Addresses, ip6Addresses, trafficSendInMB, trafficReceivedInMB]
+      required:
+        [
+          name,
+          displayName,
+          macAddress,
+          ip4Addresses,
+          ip6Addresses,
+          trafficSendInMB,
+          trafficReceivedInMB,
+        ]
 
     # Type ExecutionState
     ExecutionState:
@@ -396,7 +406,7 @@ components:
         BundleID:
           type: number
         Version:
-          $ref: '#/components/schemas/Version'
+          $ref: "#/components/schemas/Version"
       required:
         - "FeatureName"
         - "Provider"
@@ -426,7 +436,7 @@ components:
           type: string
         typeOfEvent:
           description: the type of event that occured
-          $ref: '#/components/schemas/EventLogTypes'
+          $ref: "#/components/schemas/EventLogTypes"
         event:
           description: the event that has happened
           type: string
@@ -454,7 +464,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JW
+      bearerFormat: JWT
 
     basicAuth:
       type: http
