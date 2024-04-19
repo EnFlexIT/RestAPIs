@@ -89,18 +89,12 @@ paths:
         - user
       summary: Logs the user out of the system
       description: |
-        Marks the jwt that has been used to make this request as invalid and does not return a new jwt.
+        Deletes the jwt that has been used to make this request and does not return a new jwt.
         Effectively logging the user out of the System
       operationId: logout
       responses:
         "200":
           description: successfully logged the user out
-        "503":
-          description: |
-            The server could not log the user out.
-            the user should somehow be notified that his jwt is still valid
-        default:
-          description: Couldnt log user out
 
   /info:
     get:
