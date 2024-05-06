@@ -1,0 +1,1049 @@
+{
+	"info": {
+		"_postman_id": "62284c80-f409-4b04-914e-c98adb486b2a",
+		"name": "Test-Calls",
+		"description": "This is the REST-API for Agent.Workbench in an embbedded system mode.\n\nContact Support:\n Name: EnFlex.IT\n Email: admin@enflex.it",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "20513258-62284c80-f409-4b04-914e-c98adb486b2a"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "login",
+					"item": [
+						{
+							"name": "Logs user into the system",
+							"id": "81404b1c-b80c-4fa1-b4a0-aa15c4bd13d3",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{basicAuthUsername}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{basicAuthPassword}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								},
+								"description": "Does NOT use Bearer Auth like whole other application. Only Endpoint that uses Basic Authentication. Expects previously configured Credentials and returns appropriate Bearer Token"
+							},
+							"response": [
+								{
+									"id": "6da44b91-baa4-4ab8-9cc5-d75c4ef6ee64",
+									"name": "successfully logged-in",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: basic",
+												"key": "Authorization",
+												"value": "Basic <credentials>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/user/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "<string>"
+								},
+								{
+									"id": "1641aca5-4178-4d21-8036-7b949b792291",
+									"name": "Invalid username/password supplied",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: basic",
+												"key": "Authorization",
+												"value": "Basic <credentials>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/user/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"login"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": []
+								}
+							]
+						}
+					],
+					"id": "df8fe0b8-7a6d-4ad0-a123-19b75956e7f9"
+				},
+				{
+					"name": "pswd-change",
+					"item": [
+						{
+							"name": "Changes the user password",
+							"id": "1fd2da9e-128c-4abd-8eb5-21d444c5d826",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"password_old\": \"<string>\",\n  \"password_new\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/pswd-change",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"pswd-change"
+									]
+								}
+							},
+							"response": [
+								{
+									"id": "bbd7e646-6616-4dbf-96aa-6d80e10c5dfd",
+									"name": "successfully logged-in",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"password_old\": \"<string>\",\n  \"password_new\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/user/pswd-change",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"pswd-change"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"example\": {\n    \"token\": \"{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}\"\n  }\n}"
+								},
+								{
+									"id": "1fffaf38-9446-438f-8c5b-efcc34daded5",
+									"name": "Invalid username/password supplied",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"password_old\": \"<string>\",\n  \"password_new\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/user/pswd-change",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"pswd-change"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": []
+								}
+							]
+						}
+					],
+					"id": "92a7b718-f2c0-4366-b5dc-0947f369ccc7"
+				},
+				{
+					"name": "logout",
+					"item": [
+						{
+							"name": "Logs the user out of the system",
+							"id": "ef0f575b-e754-494f-b9d9-e55363822d5e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"logout"
+									]
+								},
+								"description": "Deletes the jwt that has been used to make this request and does not return a new jwt.\nEffectively logging the user out of the System\n"
+							},
+							"response": [
+								{
+									"id": "444dd3e0-0905-402a-a4e4-34e689dcc5f8",
+									"name": "successfully logged the user out",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/user/logout",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"user",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": []
+								}
+							]
+						}
+					],
+					"id": "6bc59097-f6ec-420f-9f00-9849a0981547"
+				}
+			],
+			"id": "c4a9e47d-c2d6-4825-9ba2-70034c5e18ff"
+		},
+		{
+			"name": "info",
+			"item": [
+				{
+					"name": "Returns system information",
+					"id": "eb03b994-dc82-46b0-8f25-ff4313bd7ca4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/info",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"info"
+							]
+						},
+						"description": "Returns Hardware and system  inforamtion.\n"
+					},
+					"response": [
+						{
+							"id": "6cdf182e-0b15-418f-8610-ddb799e64232",
+							"name": "AWB-State",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/info",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"info"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"osDescription\": \"<string>\",\n  \"osManufacturer\": \"<string>\",\n  \"osFamilly\": \"<string>\",\n  \"osVersion\": \"<string>\",\n  \"processorName\": \"<string>\",\n  \"processorFrequenceInMhz\": \"<double>\",\n  \"processorNoPhysical\": \"<integer>\",\n  \"processorNoLogical\": \"<integer>\",\n  \"memoryTotalInGB\": \"<double>\",\n  \"swapMemoryTotalInGB\": \"<double>\",\n  \"heapMemoryMaxInGB\": \"<double>\",\n  \"networkConnections\": [\n    {\n      \"name\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"macAddress\": \"<string>\",\n      \"ip4Addresses\": \"<string>\",\n      \"ip6Addresses\": \"<string>\",\n      \"trafficSendInMB\": \"<double>\",\n      \"trafficReceivedInMB\": \"<double>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"macAddress\": \"<string>\",\n      \"ip4Addresses\": \"<string>\",\n      \"ip6Addresses\": \"<string>\",\n      \"trafficSendInMB\": \"<double>\",\n      \"trafficReceivedInMB\": \"<double>\"\n    }\n  ]\n}"
+						}
+					]
+				}
+			],
+			"id": "21a8cbb1-b890-48ee-a107-53ce31241811"
+		},
+		{
+			"name": "executionState",
+			"item": [
+				{
+					"name": "Returns the current AWB state",
+					"id": "ca8f2dcc-bc98-40db-853e-cf9b9670c6b6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/executionState",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"executionState"
+							]
+						},
+						"description": "Returns the current state of Agent.Workbench consisiting information  about the execution mode, the currently open project and other.\n"
+					},
+					"response": [
+						{
+							"id": "610029cd-67cc-4626-8f01-cc9c5aae41f3",
+							"name": "AWB-State",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/executionState",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"executionState"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"executionMode\": \"APPLICATION\",\n  \"deviceSystemExecutionMode\": \"AGENT\"\n}"
+						}
+					]
+				}
+			],
+			"id": "d6de58df-4a4b-49b1-a609-af8971b234d6"
+		},
+		{
+			"name": "load",
+			"item": [
+				{
+					"name": "Returns the current System load",
+					"id": "e4222df0-9332-4e40-bec3-c3bdacefa9f1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/load",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"load"
+							]
+						},
+						"description": "Returns the current system load measured by Agent.Workbench that includes CPU-, memory- and Java Heap - load. Further, the number of threads and agents will be returnes\n"
+					},
+					"response": [
+						{
+							"id": "8df5410a-499a-46c0-806d-4b7bd3f55e7e",
+							"name": "System Load",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/load",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"load"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"cpuUsage\": \"<float>\",\n  \"memUsage\": \"<float>\",\n  \"heapUsage\": \"<float>\"\n}"
+						}
+					]
+				}
+			],
+			"id": "7b8302d2-d2b9-403f-b77a-c0d376571baa"
+		},
+		{
+			"name": "version",
+			"item": [
+				{
+					"name": "Return most up to date version number",
+					"id": "3990ad34-bc18-40c3-8bd9-ab4f05dbffa5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/version",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "99f710c5-7609-45aa-bbd2-b693cfee4375",
+							"name": "Request was successful and user receives versionNumber",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/version",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"version"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"versionNumber\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"id": "42afd3af-73dd-4d1d-9acf-bb92c0c9d92e"
+		},
+		{
+			"name": "installationDetails",
+			"item": [
+				{
+					"name": "Get the details about an AWB Installation",
+					"id": "0bbf6f4d-92bf-4d63-8f8c-fe44b242b164",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/installationDetails",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"installationDetails"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "7f506e75-a2c5-486f-9649-304d99b07b9a",
+							"name": "Return the Details about an AWB Installtion",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/installationDetails",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"installationDetails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"FeatureName\": \"<string>\",\n    \"Provider\": \"<string>\",\n    \"BundleName\": \"<string>\",\n    \"BundleID\": \"<number>\",\n    \"Version\": {\n      \"versionNumber\": \"<string>\"\n    }\n  },\n  {\n    \"FeatureName\": \"<string>\",\n    \"Provider\": \"<string>\",\n    \"BundleName\": \"<string>\",\n    \"BundleID\": \"<number>\",\n    \"Version\": {\n      \"versionNumber\": \"<string>\"\n    }\n  }\n]"
+						}
+					]
+				}
+			],
+			"id": "d25b8957-f711-4eb4-99e5-afa5b53f263e"
+		},
+		{
+			"name": "isUpdateAvailable",
+			"item": [
+				{
+					"name": "Checks wether an update for the AWB is available or not",
+					"id": "4d18f2e3-fb3b-4ca7-aac1-50cb3d315ceb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/isUpdateAvailable",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"isUpdateAvailable"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "97abc209-1c36-4987-8f85-00e8b0e2cbba",
+							"name": "request successful. boolean in response indicates wether update is available or not",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/isUpdateAvailable",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"isUpdateAvailable"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "<boolean>"
+						}
+					]
+				}
+			],
+			"id": "0e08116e-5d6f-4633-b16d-9b07d716f5e1"
+		},
+		{
+			"name": "eventLog",
+			"item": [
+				{
+					"name": "get logs of specific type",
+					"id": "e3f26194-aed2-4b8b-abb7-ff7744330499",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eventLog?amount=10&type=Project",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eventLog"
+							],
+							"query": [
+								{
+									"description": "the maximum number of logs to retrieve. If no number is specified the default is 10",
+									"key": "amount",
+									"value": "10"
+								},
+								{
+									"description": "(Required) The type which is retrieved by awb",
+									"key": "type",
+									"value": "Project"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "5db9e1c6-473b-4d2b-a926-4f7f8233ede4",
+							"name": "Return Logs of specified type",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/eventLog?amount=10&type=Project",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"eventLog"
+									],
+									"query": [
+										{
+											"description": "the maximum number of logs to retrieve. If no number is specified the default is 10",
+											"key": "amount",
+											"value": "10"
+										},
+										{
+											"description": "(Required) The type which is retrieved by awb",
+											"key": "type",
+											"value": "Project"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"time\": \"<string>\",\n    \"event\": \"Running\",\n    \"typeOfEvent\": \"Setup\"\n  }\n]"
+						}
+					]
+				}
+			],
+			"id": "33ba7062-09e9-4bd1-9e4c-d6319c8f0bc7"
+		},
+		{
+			"name": "doUpdate",
+			"item": [
+				{
+					"name": "tries to initiate update of awb",
+					"id": "e0d512fa-34d1-4e82-8fac-18a55ac34c0e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doUpdate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doUpdate"
+							]
+						},
+						"description": "tries to initiate update of awb"
+					},
+					"response": [
+						{
+							"id": "42b9fde5-8a55-49b1-8365-768b07f3397f",
+							"name": "AWB Update was sheduled. The state of the update can be received by calling /eventLog",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/doUpdate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"doUpdate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": []
+						},
+						{
+							"id": "0100d6aa-8d5c-487e-9c48-91b9852f8e45",
+							"name": "AWB cant currently be updated due to unknown circumstances",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/doUpdate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"doUpdate"
+									]
+								}
+							},
+							"status": "Locked (WebDAV) (RFC 4918)",
+							"code": 423,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": []
+						}
+					]
+				}
+			],
+			"id": "29f2997d-a561-4e47-9da6-3c7a58855972"
+		},
+		{
+			"name": "doRestart",
+			"item": [
+				{
+					"name": "tries to shedule restart",
+					"id": "f2067fda-f483-4af1-87f4-dc71deeb0bfb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doRestart",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doRestart"
+							]
+						},
+						"description": "tries to shedule restart"
+					},
+					"response": [
+						{
+							"id": "7f91e92f-10ca-4be7-93a6-3a51d346831c",
+							"name": "Restart will happen. History can be accessed via eventLog",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/doRestart",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"doRestart"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": []
+						},
+						{
+							"id": "7ad4adab-f7a8-469d-a595-3c83beacd3dc",
+							"name": "Restart could not be initiated",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/doRestart",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"doRestart"
+									]
+								}
+							},
+							"status": "Locked (WebDAV) (RFC 4918)",
+							"code": 423,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": []
+						}
+					]
+				}
+			],
+			"id": "24ff0ceb-2c9c-4e14-bda2-3fe56decd1f4"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"id": "670ea2d7-901c-4de1-99ba-3ece7d4bed1a",
+			"key": "baseUrl",
+			"value": "https://localhost:8080/api"
+		}
+	]
+}
