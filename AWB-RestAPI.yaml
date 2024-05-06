@@ -101,7 +101,7 @@ paths:
         - admins
       summary: Returns system information
       description: |
-        Returns Hardware and system  inforamtion.
+        Returns Hardware and system  information.
       externalDocs:
         description: See description on GitBook
         url: https://www.gitbook.io
@@ -150,7 +150,7 @@ paths:
     get:
       tags:
         - info
-      summary: Return most up to date version number
+      summary: Return the current version number of Agent.Workbench
       responses:
         "200":
           description: Request was successful and user receives versionNumber
@@ -370,7 +370,13 @@ components:
           enum:
             - SETUP
             - AGENT
-      description: The Agent.Workbench execution state
+        project:
+          type: string
+          description: The currently open project
+        setup:
+          type: string
+          description: The currently open project-setup
+      description: The Agent.Workbench execution state with its open project and the selected setup
 
     # Type SystemLoad
     SystemLoad:
@@ -398,12 +404,27 @@ components:
     Version:
       type: object
       properties:
-        versionNumber:
+        major:
+          type: integer
+          format: int32
+          description: the major version number
+        minor:
+          type: integer
+          format: int32
+          description: the minor version number
+        micro:
+          type: integer
+          format: int32
+          description: the micro version number
+        qualifier:
           type: string
-          description: the version number
-      description: Object that holds Version Information. Is Object for scalability
+          description: the version qualifier
+      description: Object that holds Version Information. 
       required:
-        - "versionNumber"
+        - "major"
+        - "minor"
+        - "micro"
+        - "qualifier"
 
     BundleInformation:
       type: object
