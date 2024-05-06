@@ -24,13 +24,13 @@
 									"type": "basic",
 									"basic": [
 										{
-											"key": "username",
-											"value": "{{basicAuthUsername}}",
+											"key": "password",
+											"value": "test",
 											"type": "string"
 										},
 										{
-											"key": "password",
-											"value": "{{basicAuthPassword}}",
+											"key": "username",
+											"value": "test",
 											"type": "string"
 										}
 									]
@@ -138,6 +138,16 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -151,7 +161,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"password_old\": \"<string>\",\n  \"password_new\": \"<string>\"\n}",
+									"raw": "{\n  \"password_old\": \"Test2\",\n  \"password_new\": \"Tes\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -1034,16 +1044,46 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "{{bearerToken}}",
+				"value": "",
 				"type": "string"
 			}
 		]
 	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5b85a926-a618-4158-a8dc-c3fd62b0b2ce",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7a82e5eb-31a4-4e02-90d9-e3e832716bff",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
-			"id": "670ea2d7-901c-4de1-99ba-3ece7d4bed1a",
+			"id": "13febb07-a036-41ca-9bfc-ab8c047abd6d",
 			"key": "baseUrl",
 			"value": "https://localhost:8080/api"
+		},
+		{
+			"id": "47bf8fb6-872a-406e-ac0f-74484bb0710b",
+			"key": "bearerToken",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

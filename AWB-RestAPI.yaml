@@ -75,22 +75,21 @@ paths:
                   password_new: testpass-new
       responses:
         "200":
-          description: successfully logged-in
+          description: successfully change password
           content:
             "application/json":
               example:
                 token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
         default:
-          description: Invalid username/password supplied
+          description: invalid parameters supplied
 
   /user/logout:
     get:
       tags:
         - user
-      summary: Logs the user out of the system
+      summary: Logs out the user from the system
       description: |
-        Deletes the jwt that has been used to make this request and does not return a new jwt.
-        Effectively logging the user out of the System
+        Effectively logs-out the user from the System
       operationId: logout
       responses:
         "200":
