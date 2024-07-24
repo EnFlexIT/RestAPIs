@@ -24,12 +24,12 @@
 									"type": "basic",
 									"basic": [
 										{
-											"key": "password",
-											"value": "test",
+											"key": "username",
+											"value": "awbAdmin",
 											"type": "string"
 										},
 										{
-											"key": "username",
+											"key": "password",
 											"value": "test",
 											"type": "string"
 										}
@@ -138,16 +138,6 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{bearerToken}}",
-											"type": "string"
-										}
-									]
-								},
 								"method": "POST",
 								"header": [
 									{
@@ -161,7 +151,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"password_old\": \"Test2\",\n  \"password_new\": \"Tes\"\n}",
+									"raw": "{\n    \"password_old\": \"Test12\",\n    \"password_new\": \"test\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -286,7 +276,7 @@
 					"name": "logout",
 					"item": [
 						{
-							"name": "Logs the user out of the system",
+							"name": "Logs out the user from the system",
 							"id": "ef0f575b-e754-494f-b9d9-e55363822d5e",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -564,7 +554,7 @@
 			"name": "version",
 			"item": [
 				{
-					"name": "Return most up to date version number",
+					"name": "Return the current version number of Agent.Workbench",
 					"id": "3990ad34-bc18-40c3-8bd9-ab4f05dbffa5",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -624,7 +614,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"versionNumber\": \"<string>\"\n}"
+							"body": "{\n  \"versionNumber\": \"<string>\",\n  \"major\": \"<integer>\",\n  \"minor\": \"<integer>\",\n  \"micro\": \"<integer>\",\n  \"qualifier\": \"<string>\"\n}"
 						}
 					]
 				}
@@ -695,7 +685,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "[\n  {\n    \"FeatureName\": \"<string>\",\n    \"Provider\": \"<string>\",\n    \"BundleName\": \"<string>\",\n    \"BundleID\": \"<number>\",\n    \"Version\": {\n      \"versionNumber\": \"<string>\"\n    }\n  },\n  {\n    \"FeatureName\": \"<string>\",\n    \"Provider\": \"<string>\",\n    \"BundleName\": \"<string>\",\n    \"BundleID\": \"<number>\",\n    \"Version\": {\n      \"versionNumber\": \"<string>\"\n    }\n  }\n]"
+							"body": "[\n  {\n    \"FeatureName\": \"<string>\",\n    \"Provider\": \"<string>\",\n    \"BundleName\": \"<string>\",\n    \"BundleID\": \"<number>\",\n    \"Version\": {\n      \"versionNumber\": \"<string>\",\n      \"major\": \"<integer>\",\n      \"minor\": \"<integer>\",\n      \"micro\": \"<integer>\",\n      \"qualifier\": \"<string>\"\n    }\n  },\n  {\n    \"FeatureName\": \"<string>\",\n    \"Provider\": \"<string>\",\n    \"BundleName\": \"<string>\",\n    \"BundleID\": \"<number>\",\n    \"Version\": {\n      \"versionNumber\": \"<string>\",\n      \"major\": \"<integer>\",\n      \"minor\": \"<integer>\",\n      \"micro\": \"<integer>\",\n      \"qualifier\": \"<string>\"\n    }\n  }\n]"
 						}
 					]
 				}
@@ -800,14 +790,14 @@
 							],
 							"query": [
 								{
-									"description": "the maximum number of logs to retrieve. If no number is specified the default is 10",
 									"key": "amount",
-									"value": "10"
+									"value": "10",
+									"description": "the maximum number of logs to retrieve. If no number is specified the default is 10"
 								},
 								{
-									"description": "(Required) The type which is retrieved by awb",
 									"key": "type",
-									"value": "Project"
+									"value": "Project",
+									"description": "(Required) The type which is retrieved by awb"
 								}
 							]
 						}
@@ -1044,7 +1034,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJBV0ItV2ViU2VydmVyIiwic3ViIjoiQVdCLVdlYlNlcnZlciIsInVzZXIiOiJhd2JBZG1pbiIsInJvbGUiOiJMb2NhbFVzZXIiLCJpYXQiOjE3MjE4MzM1NTgsImV4cCI6MTcyMTgzNDE1OH0.vIDI4cWHM59NIrP3UBCwtS-DqVgrRqg0auVXsDQA1G4xDuq2hau3WIEYbBeHEPcUY_p7qUExhXvBFJRXcC9y-w",
 				"type": "string"
 			}
 		]
@@ -1053,7 +1043,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "5b85a926-a618-4158-a8dc-c3fd62b0b2ce",
+				"id": "be40b722-2387-4866-bc51-cccd747bc1e7",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1064,7 +1054,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "7a82e5eb-31a4-4e02-90d9-e3e832716bff",
+				"id": "6a591a3a-bd89-4b90-912e-27945c9a5808",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1075,12 +1065,13 @@
 	],
 	"variable": [
 		{
-			"id": "13febb07-a036-41ca-9bfc-ab8c047abd6d",
+			"id": "77b87b9d-4a26-43e0-8c3d-62b55eb57fba",
 			"key": "baseUrl",
-			"value": "https://localhost:8080/api"
+			"value": "https://localhost:8080/api",
+			"type": "any"
 		},
 		{
-			"id": "47bf8fb6-872a-406e-ac0f-74484bb0710b",
+			"id": "ae3994ee-5917-4395-8ed2-e63c752e3602",
 			"key": "bearerToken",
 			"value": "",
 			"type": "string"
