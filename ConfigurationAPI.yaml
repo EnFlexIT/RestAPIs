@@ -1,0 +1,129 @@
+openapi: 3.0.0
+# General Information
+info:
+  title: Enflex.IT Configuration API
+  description: This is the common Configuration API for all Enflex.IT Applications.
+  contact:
+    name: EnFlex.IT
+    url: https://www.enflex.it
+    email: admin@enflex.it
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+# servers:
+# Security
+# security:
+# Tags to classifiy / organize paths
+#  tags:
+# The paths of a REST-API
+paths:
+  "/config/{Context}/getConfigIDs":
+    get:
+      summary: returns the different ids associated with contexual objects
+      description: e.g. List of Device IDs, or List of Configuration Files
+      parameters:
+        - $ref: "#/components/parameters/context"
+      responses:
+        200:
+          description: list of all configurable ids associated with specified context
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConfigurationId"
+
+  "/config/{Context}/getConfiguration/{configId}":
+    get:
+      summary: return map of all configurable settings of some contexual object e.g. entries of settings file
+      parameters:
+        - $ref: "#/components/parameters/context"
+        - $ref: "#/components/parameters/configId"
+      responses:
+        200:
+          description: Successful
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConfigurationTableEntry"
+
+  "/config/{Context}/postConfiguration/{configId}":
+    post:
+      summary: set a table of configurations that belong to a specific object inside of a context
+      parameters:
+        - $ref: "#/components/parameters/context"
+        - $ref: "#/components/parameters/configId"
+        - $ref: "#/components/parameters/configurationUpdate"
+      responses:
+        200:
+          description: Successful
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConfigurationUpdateResponse"
+
+components:
+  parameters:
+    context:
+      description: specifies the context of configuration
+      name: Context
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/Contexts"
+    configId:
+      description: unique identifier for contexual object
+      name: configId
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/ContextualIdForObject"
+    configurationUpdate:
+      name: configurationUpdate
+      in: query
+      required: true
+      schema:
+        type: array
+        items:
+          $ref: "#/components/schemas/ConfigurationTableEntry"
+  schemas:
+    Contexts:
+      type: string
+      description: the different types of contexts for a configuration call
+      enum:
+        - localCommunication
+        - devices
+        - database
+        - externalServices
+        - machineLearning
+    ConfigurationId:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/ContextualIdForObject"
+        alreadyConfigured:
+          type: boolean
+          default: false
+      required:
+        - id
+        - alreadyConfigured
+    ContextualIdForObject:
+      type: string
+      description: contexually unique identifier for some object
+    ConfigurationTableEntry:
+      description: represents the key-value pair of a single configurable option
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      required:
+        - key
+        - value
+    ConfigurationUpdateResponse:
+      type: string
+      example: Successful
