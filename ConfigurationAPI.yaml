@@ -22,6 +22,7 @@ paths:
     get:
       summary: returns the different ids associated with contexual objects
       description: e.g. List of Device IDs, or List of Configuration Files
+      operationId: getConfigIds
       parameters:
         - $ref: "#/components/parameters/context"
       responses:
@@ -32,11 +33,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ConfigurationId"
+                  $ref: "#/components/schemas/ConfigurationIdWithMetaData"
 
   "/config/{Context}/getConfiguration/{configId}":
     get:
       summary: return map of all configurable settings of some contexual object e.g. entries of settings file
+      operationId: getConfigurationById
       parameters:
         - $ref: "#/components/parameters/context"
         - $ref: "#/components/parameters/configId"
@@ -48,11 +50,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ConfigurationTableEntry"
+                  $ref: "#/components/schemas/Configurationoption"
 
   "/config/{Context}/postConfiguration/{configId}":
     post:
       summary: set a table of configurations that belong to a specific object inside of a context
+      operationId: postConfiguration
       parameters:
         - $ref: "#/components/parameters/context"
         - $ref: "#/components/parameters/configId"
@@ -68,31 +71,32 @@ paths:
 components:
   parameters:
     context:
-      description: specifies the context of configuration
+      description: this parameter specifies the context in which the operation takes place
       name: Context
       in: path
       required: true
       schema:
         $ref: "#/components/schemas/Contexts"
     configId:
-      description: unique identifier for contexual object
+      description: this parameter specifies some contexually unique id of a configuration on which should be acted on
       name: configId
       in: path
       required: true
       schema:
-        $ref: "#/components/schemas/ContextualIdForObject"
+        $ref: "#/components/schemas/ConfigurationId"
     configurationUpdate:
       name: configurationUpdate
+      description: this parameter specifies a list of key-value pairs which should be used to update a given configuration.
       in: query
       required: true
       schema:
         type: array
         items:
-          $ref: "#/components/schemas/ConfigurationTableEntry"
+          $ref: "#/components/schemas/Configurationoption"
   schemas:
     Contexts:
       type: string
-      description: the different types of contexts for a configuration call
+      description: the different types of contexts for a configuration
       enum:
         - localCommunication
         - devices
@@ -100,21 +104,21 @@ components:
         - externalServices
         - machineLearning
     ConfigurationId:
+      type: string
+      description: contexually unique identifier for some configuration. One Configuration can consist of multiple ConfigurationOptions
+    ConfigurationIdWithMetaData:
       type: object
+      description: object that holds a contexually unique identifier for some configuration and moreover some meta data regarding this configuration. e.g. if the configuration is already configured
       properties:
         id:
-          $ref: "#/components/schemas/ContextualIdForObject"
+          $ref: "#/components/schemas/ConfigurationId"
         alreadyConfigured:
           type: boolean
           default: false
       required:
         - id
-        - alreadyConfigured
-    ContextualIdForObject:
-      type: string
-      description: contexually unique identifier for some object
-    ConfigurationTableEntry:
-      description: represents the key-value pair of a single configurable option
+    Configurationoption:
+      description: represents the key-value pair of a single configurable option belonging to some configuration. A list of ConfigurationOptions make up a configuration
       type: object
       properties:
         key:
