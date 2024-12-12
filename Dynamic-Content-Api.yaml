@@ -1,0 +1,137 @@
+---
+openapi: 3.0.0
+# General Information
+info:
+  title: Enflex.IT - Dynamic Content Api
+  description: This is the Definition of the Api to dynamically fetch content for any enflex.it application
+  contact:
+    name: EnFlex.IT
+    url: https://www.enflex.it
+    email: admin@enflex.it
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+
+# Servers
+servers:
+  - url: https://enflex.it
+
+# Security
+# security:
+#   - bearerAuth: []
+
+# Tags to classifiy / organize paths
+# tags:
+
+# The paths of a REST-API
+paths:
+  /tmp:
+    get:
+      responses:
+        default:
+          description: temporary path, so openapi file gets parsed correctly
+
+# Component definition such as schemas, securitySchemes and so on
+components:
+  schemas:
+    AbstractSiteContent:
+      type: object
+      properties:
+        uniqueContentID:
+          type: integer
+        editable:
+          type: boolean
+        updatePeriodInSeconds:
+          type: integer
+      required:
+        - uniqueContentID
+        - editable
+        - updatePeriodInSeconds
+    SiteContentMedia:
+      allOf:
+        - $ref: "#/components/schemas/AbstractSiteContent"
+        - type: object
+        - properties:
+            mimeType:
+              type: string
+        - required:
+            - mimeType
+    SiteContentText:
+      allOf:
+        - $ref: "#/components/schemas/SiteContentMedia"
+        - type: object
+        - properties:
+            text:
+              type: string
+        - required:
+            - text
+    SiteContentImage:
+      allOf:
+        - $ref: "#/components/schemas/SiteContentMedia"
+        - type: object
+        - properties:
+            dataInB64:
+              type: string
+        - required:
+            - dataInB64
+    AbstractSiteContentChart:
+      allOf:
+        - $ref: "#/components/schemas/AbstractSiteContent"
+        - type: object
+    SiteContentXYChart:
+      allOf:
+        - $ref: "#/components/schemas/AbstractSiteContentChart"
+        - type: object
+    SiteContentTimeSeriesChart:
+      allOf:
+        - $ref: "#/components/schemas/AbstractSiteContentChart"
+        - type: object
+    ValueType:
+      type: string
+      enum: [INTEGER, BOOLEAN, STRING, LONG, DOUBLE]
+    SiteContentProperties:
+      allOf:
+        - $ref: "#/components/schemas/AbstractSiteContent"
+        - type: object
+        - properties:
+            key:
+              type: string
+            value:
+              type: string
+            valueType:
+              $ref: "#/components/schemas/ValueType"
+        - required:
+            - key
+            - value
+            - valueType
+    RowVector:
+      type: array
+      items:
+        type: string
+    SiteContentTable:
+      allOf:
+        - $ref: "#/components/schemas/AbstractSiteContent"
+        - type: object
+        - properties:
+            header:
+              type: array
+              items:
+                type: string
+            dataType:
+              type: array
+              items:
+                $ref: "#/components/schemas/ValueType"
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/RowVector"
+        - required:
+            - header
+            - dataType
+            - data
+
+  # securitySchemes:
+  #   basicAuth:
+  #     type: http
+  #     scheme: basic
