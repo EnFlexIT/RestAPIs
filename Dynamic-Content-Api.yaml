@@ -80,7 +80,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AbstractSiteContent'
-
+      required:
+        - "contentList"
 
     AbstractSiteContent:
       discriminator:
