@@ -58,9 +58,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            items:
-              $ref: '#/components/schemas/SiteContentList'
+            $ref: '#/components/schemas/SiteContentList'
 
   # --- Schemas & type definition -------------------------
   schemas:
