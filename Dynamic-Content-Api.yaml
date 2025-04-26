@@ -84,15 +84,7 @@ components:
         - "contentList"
 
     AbstractSiteContent:
-      discriminator:
-        propertyName: AbstractSiteContent
-        mapping:
-          SiteContentText: '#/components/schemas/SiteContentText'
-          SiteContentImage: '#/components/schemas/SiteContentImage'
-          SiteContentProperties: '#/components/schemas/SiteContentProperties'
-          SiteContentTable: '#/components/schemas/SiteContentTable'
-          SiteContentXYChart: '#/components/schemas/SiteContentXYChart'
-          SiteContentTimeSeriesChart: '#/components/schemas/SiteContentTimeSeriesChart'
+      type: object
       properties:
         uniqueContentID:
           type: integer
@@ -104,42 +96,95 @@ components:
       - editable
       - uniqueContentID
       - updatePeriodInSeconds
+      discriminator:
+        propertyName: AbstractSiteContentType
+        mapping:
+          SiteContentMedia: '#/components/schemas/SiteContentMedia'
+          AbstractSiteContentChart: '#/components/schemas/AbstractSiteContentChart'
+          SiteContentProperties: '#/components/schemas/SiteContentProperties'
+          SiteContentTable: '#/components/schemas/SiteContentTable'
+      # oneOf:
+      #   - $ref: '#/components/schemas/SiteContentMedia'
+      #   - $ref: '#/components/schemas/AbstractSiteContentChart'
+      #   - $ref: '#/components/schemas/SiteContentProperties'
+      #   - $ref: '#/components/schemas/SiteContentTable'
 
     SiteContentMedia:
       allOf:
-      - $ref: '#/components/schemas/AbstractSiteContent'
-      properties:
-        mimeType:
-          type: string
-      required:
-        - mimeType
+        - $ref: '#/components/schemas/AbstractSiteContent'
+        - type: object
+          properties:
+            mimeType:
+              type: string
+          required:
+            - mimeType
+          discriminator:
+            propertyName: AbstractSiteContentType
+            mapping:
+              SiteContentText: '#/components/schemas/SiteContentText'
+              SiteContentImage: '#/components/schemas/SiteContentImage'
+      # oneOf:
+      #   - $ref: '#/components/schemas/SiteContentText'
+      #   - $ref: '#/components/schemas/SiteContentImage'
 
     SiteContentText:
       allOf:
-      - $ref: '#/components/schemas/SiteContentMedia'
-      properties:
-        text:
-          type: string
-      required:
-        - text
+        - $ref: '#/components/schemas/SiteContentMedia'
+        - type: object
+          properties:
+            text:
+              type: string
+          required:
+            - text
 
     SiteContentImage:
       allOf:
-      - $ref: '#/components/schemas/SiteContentMedia'
-      properties:
-        dataInB64:
-          type: string
-      required:
-        - dataInB64
+        - $ref: '#/components/schemas/SiteContentMedia'
+        - type: object
+          properties:
+            dataInB64:
+              type: string
+            width:
+              type: integer
+            height:
+              type: integer
+          required:
+            - dataInB64
+            - width
+            - height
+
+    AbstractSiteContentChart:
+      allOf:
+        - $ref: '#/components/schemas/AbstractSiteContent'
+        - type: object
+          discriminator:
+            propertyName: AbstractSiteContentType
+            mapping:
+              SiteContentXYChart: '#/components/schemas/SiteContentXYChart'
+              SiteContentTimeSeriesChart: '#/components/schemas/SiteContentTimeSeriesChart'
+      # oneOf:
+      #   - $ref: '#/components/schemas/SiteContentXYChart'
+      #   - $ref: '#/components/schemas/SiteContentTimeSeriesChart'
+
+    SiteContentXYChart:
+      allOf:
+        - $ref: '#/components/schemas/AbstractSiteContentChart'
+
+    SiteContentTimeSeriesChart:
+      allOf:
+        - $ref: '#/components/schemas/AbstractSiteContentChart'
 
     SiteContentProperties:
       allOf:
-      - $ref: '#/components/schemas/AbstractSiteContent'
-      properties:
-        propertyEntries:
-          type: array
-          items: 
-            $ref: '#/components/schemas/PropertyEntry'
+        - $ref: '#/components/schemas/AbstractSiteContent'
+        - type: object
+          properties:
+            propertyEntries:
+              type: array
+              items: 
+                $ref: '#/components/schemas/PropertyEntry'
+          required:
+            - propertyEntries
 
     PropertyEntry:
       properties:
@@ -149,6 +194,10 @@ components:
           type: string
         valueType:
           $ref: '#/components/schemas/ValueType'
+      required:
+        - key
+        - value
+        - valueType
 
     ValueType:
       type: string
@@ -160,47 +209,28 @@ components:
       - DOUBLE
 
     SiteContentTable:
-      type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractSiteContent'
-      - type: object
-      - properties:
-          header:
-            type: array
-            items:
-              type: string
-          dataType:
-            type: array
-            items:
-              $ref: '#/components/schemas/ValueType'
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/RowVector'
-      - required:
-        - data
-        - dataType
-        - header
+        - $ref: '#/components/schemas/AbstractSiteContent'
+        - type: object
+          properties:
+            header:
+              type: array
+              items:
+                type: string
+            dataType:
+              type: array
+              items:
+                $ref: '#/components/schemas/ValueType'
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/RowVector'
+          required:
+            - data
+            - dataType
+            - header
 
     RowVector:
       type: array
       items:
         type: string
-
-    AbstractSiteContentChart:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/AbstractSiteContent'
-      - type: object
-
-    SiteContentXYChart:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/AbstractSiteContentChart'
-      - type: object
-
-    SiteContentTimeSeriesChart:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/AbstractSiteContentChart'
-      - type: object
