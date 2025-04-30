@@ -95,6 +95,38 @@ paths:
         "200":
           description: successfully logged the user out
 
+  /app/settings/get:
+    get:
+      tags:
+        - info
+      summary: Returns required base configuration settings for the curren web application
+      description: Returns required base configuration settings for the curren web application
+      operationId: getAppSettings
+      responses:
+        "200":
+          description: Current application settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Properties"
+
+  /app/settings/set:
+    put:
+      tags:
+        - info
+      summary: Enables to update or set the required base configuration settings for the curren web application
+      description: Enables to update or set the required base configuration settings for the curren web application
+      operationId: setAppSettings
+      requestBody:
+        description: The new settings
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/Properties"      
+      responses:
+        "200":
+          description: Successfully changed base settings
+
   /info:
     get:
       tags:
@@ -246,6 +278,40 @@ paths:
 # Component definition such as schemas, securitySchemes and so on
 components:
   schemas:
+
+    # Definition of general properties
+    Properties:
+      type: object
+      required:
+        - propertyEntries
+      properties:
+        propertyEntries:
+          type: array
+          items: 
+            $ref: '#/components/schemas/PropertyEntry'
+
+    PropertyEntry:
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        valueType:
+          $ref: '#/components/schemas/ValueType'
+      required:
+        - key
+        - value
+        - valueType
+
+    ValueType:
+      type: string
+      enum:
+      - INTEGER
+      - BOOLEAN
+      - STRING
+      - LONG
+      - DOUBLE
+
     # Type Jwt
     Jwt:
       type: string
