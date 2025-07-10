@@ -147,27 +147,101 @@ components:
           required:
             - dataInB64
 
+    # --- Schema definitions related to charts ------------
     AbstractSiteContentChart:
       allOf:
         - $ref: '#/components/schemas/AbstractSiteContent'
         - type: object
+          properties:
+            title:
+              type: string
+            showLegend:
+              type: boolean                        
+            dataSeries:
+              type: array
+              items: 
+                $ref: '#/components/schemas/DataSeries'
+          required:
+            - title
+            - dataSeries       
           discriminator:
             propertyName: AbstractSiteContentType
             mapping:
-              SiteContentXYChart: '#/components/schemas/SiteContentXYChart'
+              SiteContentLineChart: '#/components/schemas/SiteContentLineChart'
               SiteContentTimeSeriesChart: '#/components/schemas/SiteContentTimeSeriesChart'
-      # oneOf:
-      #   - $ref: '#/components/schemas/SiteContentXYChart'
-      #   - $ref: '#/components/schemas/SiteContentTimeSeriesChart'
+              SiteContentBarChart: '#/components/schemas/SiteContentBarChart'
+              SiteContentPieChart: '#/components/schemas/SiteContentPieChart'
+#       oneOf:
+#         - $ref: '#/components/schemas/SiteContentXYChart'
+#         - $ref: '#/components/schemas/SiteContentTimeSeriesChart'
 
-    SiteContentXYChart:
+    SiteContentLineChart:
       allOf:
         - $ref: '#/components/schemas/AbstractSiteContentChart'
+        - type: object
+          properties:
+            xAxisLabel:
+              type: string
+            yAxisLabel:
+              type: string
+            yAxisLabelSecondary:
+              type: string
+          required:
+            - xAxisLabel
+            - yAxisLabel
 
     SiteContentTimeSeriesChart:
       allOf:
+        - $ref: '#/components/schemas/SiteContentLineChart'
+        - type: object
+          properties:
+            timeFormat:
+              type: string
+          required:
+            - timeFormat
+        
+    SiteContentBarChart:
+      allOf:
         - $ref: '#/components/schemas/AbstractSiteContentChart'
+        - type: object
+          properties:
+            xAxisLabel:
+              type: string
+            yAxisLabel:
+              type: string
+          required:
+            - xAxisLabel
+            - yAxisLabel
+    
+    SiteContentPieChart:
+      allOf:
+        - $ref: '#/components/schemas/AbstractSiteContentChart'
+    
+    DataSeries:
+        properties:
+          label:
+            type: string
+          useSecondaryYAxis:
+            type: boolean
+          entries:
+            type: array
+            items:
+              $ref: '#/components/schemas/ValuePair'
+        required:
+          - label
+          - entries
+            
+    ValuePair:
+        properties:
+          xValue:
+            type: number
+          yValue:
+            type: number
+        required:
+          - xValue
+          - yValue
 
+    # --- Schema definitions related to properties --------
     SiteContentProperties:
       allOf:
         - $ref: '#/components/schemas/AbstractSiteContent'
@@ -202,6 +276,7 @@ components:
       - LONG
       - DOUBLE
 
+    # --- Schema definitions related to tables ------------
     SiteContentTable:
       allOf:
         - $ref: '#/components/schemas/AbstractSiteContent'
