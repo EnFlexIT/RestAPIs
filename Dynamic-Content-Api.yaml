@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.0.1
+  version: 0.1.0
 
 servers:
   - url: http://localhost:8080
@@ -17,13 +17,21 @@ servers:
 
 # --- Api-Paths -------------------------------------------
 paths:
-  /getContent/{menueID}:
+  /menu/:
+    get:
+      summary: Enables to build-up the menu structure
+      description: Returns the menu structure available for the current user
+      responses: 
+        "202":
+          $ref: "#/components/responses/MenuArray"
+
+  /content/{menuID}:
     get:
       summary: Returns the content for the specified ID
       description: |
         Returns content information.
       parameters:
-      - name: menueID
+      - name: menuID
         in: path
         description: numeric ID of the content
         required: true
@@ -35,7 +43,7 @@ paths:
         "200":
           $ref: '#/components/responses/ContentArray'
 
-  /setContent/:
+  /content/:
     put:
       summary: Enables to update content
       requestBody:
@@ -47,11 +55,21 @@ paths:
         "201":
           description: Content was updated!
 
+# ---------------------------------------------------------
 # --- Components  -----------------------------------------
+# ---------------------------------------------------------
 components:
 
+  # -------------------------------------------------------
   # --- Responses -----------------------------------------
   responses:
+
+    MenuArray:
+      description: The menus to be seen by the current user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MenuList'
 
     ContentArray:
       description: Success - Content
@@ -60,8 +78,42 @@ components:
           schema:
             $ref: '#/components/schemas/SiteContentList'
 
+  # -------------------------------------------------------
   # --- Schemas & type definition -------------------------
   schemas:
+
+    MenuList:
+      type: object
+      properties:
+        menuList:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+
+    MenuItem:
+      type: object
+      properties:
+        menuID:
+          type: integer
+        parentID:
+          type: integer
+        isHeadMenu:
+          type: boolean
+        position:
+          type: integer
+        caption:
+          type: string
+        pathID:
+          type: string
+        pathCaption:
+          type: string
+        pathPosition:
+          type: string
+      required:
+       - ID
+       - position
+       - isHeadMenu
+       - caption
 
     SiteContentListUpdate:
       type: object
@@ -72,7 +124,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AbstractSiteContent'
-
+          maxItems: 100
+  
     SiteContentList:
       type: object
       properties:
@@ -103,11 +156,6 @@ components:
           AbstractSiteContentChart: '#/components/schemas/AbstractSiteContentChart'
           SiteContentProperties: '#/components/schemas/SiteContentProperties'
           SiteContentTable: '#/components/schemas/SiteContentTable'
-      # oneOf:
-      #   - $ref: '#/components/schemas/SiteContentMedia'
-      #   - $ref: '#/components/schemas/AbstractSiteContentChart'
-      #   - $ref: '#/components/schemas/SiteContentProperties'
-      #   - $ref: '#/components/schemas/SiteContentTable'
 
     SiteContentMedia:
       allOf:
@@ -123,9 +171,6 @@ components:
             mapping:
               SiteContentText: '#/components/schemas/SiteContentText'
               SiteContentImage: '#/components/schemas/SiteContentImage'
-      # oneOf:
-      #   - $ref: '#/components/schemas/SiteContentText'
-      #   - $ref: '#/components/schemas/SiteContentImage'
 
     SiteContentText:
       allOf:
@@ -171,9 +216,6 @@ components:
               SiteContentTimeSeriesChart: '#/components/schemas/SiteContentTimeSeriesChart'
               SiteContentBarChart: '#/components/schemas/SiteContentBarChart'
               SiteContentPieChart: '#/components/schemas/SiteContentPieChart'
-#       oneOf:
-#         - $ref: '#/components/schemas/SiteContentXYChart'
-#         - $ref: '#/components/schemas/SiteContentTimeSeriesChart'
 
     SiteContentLineChart:
       allOf:
