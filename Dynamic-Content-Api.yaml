@@ -228,7 +228,7 @@ components:
         - type: object
           properties:
             secondaryYAxisLabel:
-              type: string            
+              type: string
           required:
             - xAxisLabel
             - yAxisLabel
@@ -239,7 +239,7 @@ components:
         - type: object
           properties:
             timeFormat:
-              type: string          
+              type: string
         
     SiteContentBarChart:
       allOf:
