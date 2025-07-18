@@ -201,7 +201,11 @@ components:
             title:
               type: string
             showLegend:
-              type: boolean                        
+              type: boolean            
+            xAxisLabel:
+              type: string
+            yAxisLabel:
+              type: string
             dataSeries:
               type: array
               items: 
@@ -216,18 +220,15 @@ components:
               SiteContentTimeSeriesChart: '#/components/schemas/SiteContentTimeSeriesChart'
               SiteContentBarChart: '#/components/schemas/SiteContentBarChart'
               SiteContentPieChart: '#/components/schemas/SiteContentPieChart'
+              SiteContentScatterPlot: '#/components/schemas/SiteContentScatterPlot'
 
     SiteContentLineChart:
       allOf:
-        - $ref: '#/components/schemas/AbstractSiteContentChart'
+        - $ref: '#/components/schemas/AbstractSiteContentChart'        
         - type: object
           properties:
-            xAxisLabel:
-              type: string
-            yAxisLabel:
-              type: string
-            yAxisLabelSecondary:
-              type: string
+            secondaryYAxisLabel:
+              type: string            
           required:
             - xAxisLabel
             - yAxisLabel
@@ -238,50 +239,87 @@ components:
         - type: object
           properties:
             timeFormat:
-              type: string
-          required:
-            - timeFormat
+              type: string          
         
     SiteContentBarChart:
       allOf:
         - $ref: '#/components/schemas/AbstractSiteContentChart'
-        - type: object
-          properties:
-            xAxisLabel:
-              type: string
-            yAxisLabel:
-              type: string
           required:
             - xAxisLabel
             - yAxisLabel
     
     SiteContentPieChart:
       allOf:
+        - $ref: '#/components/schemas/AbstractSiteContentChart'          
+        
+    SiteContentScatterPlot:
+      allOf:
         - $ref: '#/components/schemas/AbstractSiteContentChart'
+          required:
+            - xAxisLabel
+            - yAxisLabel
     
     DataSeries:
         properties:
           label:
             type: string
-          useSecondaryYAxis:
+          secondaryYAxis:
             type: boolean
+            default: false
           entries:
             type: array
             items:
-              $ref: '#/components/schemas/ValuePair'
+              $ref: '#/components/schemas/AbstractValuePair'
         required:
           - label
           - entries
             
-    ValuePair:
-        properties:
-          xValue:
+    AbstractValuePair:
+        type: object    
+        properties:          
+          value:
             type: number
-          yValue:
-            type: number
-        required:
-          - xValue
-          - yValue
+            format: double
+        discriminator:
+          propertyName: xValueType
+          mapping:
+            Numeric: '#/components/schemas/ValuePairNumeric'
+            DateTime: '#/components/schemas/ValuePairDateTime'
+            Category: '#/components/schemas/ValuePairCategory'
+        required:          
+          - value
+          - xValueType
+          
+    ValuePairNumeric:
+      allOf:
+        - $ref: '#/components/schemas/AbstractValuePair'
+        - type: object
+          properties:
+            xValue: 
+              type: number
+              format: double            
+          required:
+            - xValue
+    
+    ValuePairDateTime:
+      allOf:
+        - $ref: '#/components/schemas/AbstractValuePair'
+        - type: object
+          properties:
+            isoDateTime: 
+              type: string      
+          required:
+            - isoDateTime
+            
+    ValuePairCategory:
+      allOf:
+        - $ref: '#/components/schemas/AbstractValuePair'
+        - type: object
+          properties:
+            category: 
+              type: string
+          required:
+            - xValue
 
     # --- Schema definitions related to properties --------
     SiteContentProperties:
