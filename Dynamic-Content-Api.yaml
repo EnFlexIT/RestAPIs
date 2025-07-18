@@ -28,8 +28,7 @@ paths:
   /content/{menuID}:
     get:
       summary: Returns the content for the specified ID
-      description: |
-        Returns content information.
+      description: Returns the list of content elements for the specified menu ID.
       parameters:
       - name: menuID
         in: path
@@ -55,6 +54,35 @@ paths:
         "201":
           description: Content was updated!
 
+  /contentElement/{elementID}:
+    get:
+      summary: Will return the content element with the specified ID
+      description: Returns the content element with the specified ID
+      parameters:
+      - name: elementID
+        in: path
+        description: numeric ID of the content element
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses: 
+        "202":
+          $ref: "#/components/responses/ContentElement"
+
+  /contentElement/:
+    put:
+      summary: Enables to update content elements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbstractSiteContent' 
+      responses:
+        "201":
+          description: The content element was updated!
+
 # ---------------------------------------------------------
 # --- Components  -----------------------------------------
 # ---------------------------------------------------------
@@ -72,12 +100,19 @@ components:
             $ref: '#/components/schemas/MenuList'
 
     ContentArray:
-      description: Success - Content
+      description: List of content elements
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/SiteContentList'
 
+    ContentElement:
+      description: A single content element
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AbstractSiteContent'
+      
   # -------------------------------------------------------
   # --- Schemas & type definition -------------------------
   schemas:
