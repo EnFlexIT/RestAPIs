@@ -21,6 +21,13 @@ paths:
     get:
       summary: Enables to build-up the menu structure
       description: Returns the menu structure available for the current user
+      parameters:
+      - name: lang
+        in: query
+        description: the language locale to use
+        style: simple
+        schema:
+          type: string
       responses: 
         "202":
           $ref: "#/components/responses/MenuArray"
