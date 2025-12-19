@@ -102,6 +102,11 @@ paths:
       summary: Returns required base configuration settings for the curren web application
       description: Returns required base configuration settings for the curren web application
       operationId: getAppSettings
+      parameters:
+        - in: header
+          name: X-Performative
+          schema:
+            type: string
       responses:
         "200":
           description: Current application settings
@@ -125,7 +130,7 @@ paths:
               $ref: "#/components/schemas/Properties"      
       responses:
         "200":
-          description: Successfully changed base settings
+          description: Successfully changed settings
 
   /info:
     get:
@@ -285,6 +290,8 @@ components:
       required:
         - propertyEntries
       properties:
+        performative:
+          type: String		
         propertyEntries:
           type: array
           items: 
