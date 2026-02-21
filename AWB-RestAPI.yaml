@@ -15,7 +15,7 @@ info:
 
 # Servers
 servers:
-  - url: https://localhost:8080/api
+  - url: http://localhost:8080/api
     description: AWB-Embedded System
 
 # Security
@@ -35,6 +35,18 @@ tags:
 
 # The paths of a REST-API
 paths:
+  /alive:
+    get:
+      tags:
+        - info
+      responses:
+        "200":
+          description: server system is allive 
+          content:
+            "application/json":
+              schema:
+                type: string
+
   /user/login:
     get:
       tags:
@@ -188,28 +200,29 @@ paths:
       tags:
         - info
       summary: Return the current version number of Agent.Workbench
+      parameters:
+        - in: query
+          name: type
+          schema:
+            $ref: "#/components/schemas/SoftwareComponentType"
+          required: false
+        - in: query
+          name: filter
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: isShowSource
+          schema:
+            type: boolean
+          required: false
       responses:
         "200":
           description: Request was successful and user receives versionNumber
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Version"
-
-  /installationDetails:
-    get:
-      tags:
-        - info
-      summary: Get the details about an AWB Installation
-      responses:
-        "200":
-          description: Return the Details about an AWB Installtion
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/BundleInformation"
+                $ref: "#/components/schemas/SoftwareComponentList"
 
   /isUpdateAvailable:
     get:
@@ -291,7 +304,7 @@ components:
         - propertyEntries
       properties:
         performative:
-          type: String		
+          type: String    
         propertyEntries:
           type: array
           items: 
@@ -473,6 +486,39 @@ components:
         - "memUsage"
         - "heapUsage"
 
+    # Software Components (e.g. WebApp, Bundle or Feature information)
+    SoftwareComponentList:
+      type: object
+      properties:
+        SoftwareComponentList:
+          type: array
+          items: 
+            $ref: '#/components/schemas/SoftwareComponent'  
+  
+    SoftwareComponent:
+      type: object
+      properties:
+        ID:
+          type: string
+          description: ID of the software component as for example symbolic bundle name or feature ID 
+        name:
+          type: string
+          description: human readable bundle or feature name
+        componentType:
+          $ref: "#/components/schemas/SoftwareComponentType"
+        version:
+          $ref: "#/components/schemas/Version"
+
+    SoftwareComponentType:
+      type: string
+      description: the type of software component that is either webApp, feature or bundle
+      enum:
+        - WEBAPP
+        - FEATURE
+        - BUNDLE
+        - BUNDLE_OF_FEATURE
+        - null
+
     # Version
     Version:
       type: object
@@ -499,26 +545,6 @@ components:
         - "micro"
         - "qualifier"
 
-    BundleInformation:
-      type: object
-      description: Contains Information about one singular Bundle
-      properties:
-        FeatureName:
-          type: string
-        Provider:
-          type: string
-        BundleName:
-          type: string
-        BundleID:
-          type: number
-        Version:
-          $ref: "#/components/schemas/Version"
-      required:
-        - "FeatureName"
-        - "Provider"
-        - "BundleName"
-        - "BundleID"
-        - "Version"
 
     isUpdateAvailable:
       type: boolean
