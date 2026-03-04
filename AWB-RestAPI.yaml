@@ -318,6 +318,12 @@ components:
           type: string
         valueType:
           $ref: '#/components/schemas/ValueType'
+        valueOptions:
+          type: array
+          items: 
+            type: string
+        valueOptionsOnly:
+          type: boolean
       required:
         - key
         - value
