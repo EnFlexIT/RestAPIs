@@ -144,7 +144,11 @@ paths:
               $ref: "#/components/schemas/Properties"      
       responses:
         "200":
-          description: Successfully changed settings
+          description: Successfully subbmited settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
 
   /info:
     get:
@@ -339,6 +343,27 @@ components:
       - STRING
       - LONG
       - DOUBLE
+
+    # Message-Handling
+    Message:
+      properties:
+        dateTime:
+          type: string
+        messageType:
+          $ref: '#/components/schemas/MessageType'
+        message:
+          type: string
+      required:
+        - dateTime
+        - messageType
+        - message
+
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - WARNING
+      - ERROR
 
     # Type Jwt
     Jwt:
