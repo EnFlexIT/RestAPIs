@@ -230,18 +230,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/SoftwareComponentList"
 
-  /isUpdateAvailable:
-    get:
-      tags:
-        - info
-      summary: Checks wether an update for the AWB is available or not
-      responses:
-        "200":
-          description: request successful. boolean in response indicates wether update is available or not
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/isUpdateAvailable"
 
   /eventLog:
     get:
@@ -277,16 +265,6 @@ paths:
                 items:
                   $ref: "#/components/schemas/Event"
 
-  /doUpdate:
-    post:
-      description: tries to initiate update of awb
-      tags:
-        - doAction
-      responses:
-        "423": #Locked
-          description: AWB cant currently be updated due to unknown circumstances
-        "200":
-          description: AWB Update was sheduled. The state of the update can be received by calling /eventLog
 
   /doRestart:
     post:
@@ -578,10 +556,6 @@ components:
         - "micro"
         - "qualifier"
 
-
-    isUpdateAvailable:
-      type: boolean
-      description: checks if an update for the AWB is available
 
     EventLogTypes:
       description: The different types of EventLogs
