@@ -91,11 +91,26 @@ paths:
         "200":
           description: successfully change password
           content:
-            "application/json":
+            application/json:
               example:
                 token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
         default:
           description: invalid parameters supplied
+
+  /user/sessionTime:
+    get:
+      tags:
+        - user
+      summary: Enables to read the remaining and the expiration time of the current user session  
+      description: Returns the remaining session time as well as the expiration time
+      operationId: getSessionTime
+      responses:
+        "200":
+          description: Provided remaining session time 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionTimes"
 
   /user/logout:
     get:
@@ -386,6 +401,20 @@ components:
       description: Mandatory for every auth call that uses bearer auth
       example:
         token: "{aa83349f-72e7-4b32-aa4d-e7c9b9353e8e}"
+
+    # Type SessionTime
+    SessionTimes:
+      type: object
+      required:
+        - remainingTime
+        - expirationTime
+      properties:
+        remainingTime:
+          type: integer
+          format: int64
+        expirationTime:
+          type: integer
+          format: int64
 
     # Type PasswordChange
     PasswordChange:
