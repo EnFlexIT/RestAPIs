@@ -150,6 +150,43 @@ paths:
               schema:
                 $ref: "#/components/schemas/Message"
 
+  /app/settings/upload:
+    post:
+      tags:
+        - admins
+      summary: Upload configuration file (binary)
+      description:
+        Allows uploading configuration files via multipart/form-data.
+        The X-Performative header defines the type of configuration file. 
+      operationId: uploadAppSettingsFile
+      parameters:
+        - in: header
+          name: X-Performative
+          schema:
+            type: string
+          description: Defines which configuration should be updated
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The configuration file to upload
+              required:
+                - file
+      responses:
+        "200":
+          description: Upload successful and configuration applied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+
+
   /info:
     get:
       tags:
@@ -288,7 +325,7 @@ components:
         - propertyEntries
       properties:
         performative:
-          type: String    
+          type: string    
         propertyEntries:
           type: array
           items: 
