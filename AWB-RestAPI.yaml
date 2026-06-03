@@ -201,7 +201,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Message"
 
-
   /info:
     get:
       tags:
