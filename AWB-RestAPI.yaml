@@ -112,6 +112,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/SessionTimes"
 
+  /user/sessionTime/extend:
+    get:
+      tags:
+        - user
+      summary: Extends and returns the remaining and the expiration time of the current user session  
+      description: Returns the remaining session time as well as the expiration time
+      operationId: extendSessionTime
+      responses:
+        "200":
+          description: Provided remaining session time 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionTimes"
+
   /user/logout:
     get:
       tags:
@@ -317,17 +332,6 @@ paths:
                 items:
                   $ref: "#/components/schemas/Event"
 
-
-  /doRestart:
-    post:
-      description: tries to shedule restart
-      tags:
-        - doAction
-      responses:
-        "423":
-          description: Restart could not be initiated
-        "200":
-          description: Restart will happen. History can be accessed via eventLog
 
 # Component definition such as schemas, securitySchemes and so on
 components:
