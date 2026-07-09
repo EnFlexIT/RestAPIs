@@ -260,24 +260,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/SystemInformation"
 
-  /executionState:
-    get:
-      tags:
-        - admins
-      summary: Returns the current AWB state
-      description: |
-        Returns the current state of Agent.Workbench consisiting information  about the execution mode, the currently open project and other.
-      externalDocs:
-        description: See description on GitBook
-        url: https://www.gitbook.io
-      responses:
-        "200":
-          description: AWB-State
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExecutionState"
-
   /load:
     get:
       tags:
@@ -546,35 +528,6 @@ components:
           trafficSendInMB,
           trafficReceivedInMB,
         ]
-
-    # Type ExecutionState
-    ExecutionState:
-      type: object
-      properties:
-        executionMode:
-          type: string
-          description: |
-            * 'APPLICATION' - Runs as end user application in an desktop environment * 'SERVER' - Runs as Background server-system * 'SERVER_MASTER' - Runs as central 'server. master' system and manages all 'server.slave' systems * 'SERVER_SLAVE' - Runs as central 'server. slave' system and wait for start order from the 'server.master' * 'DEVICE_SYSTEM' - Runs as system that directly executes single agents or projects
-          enum:
-            - APPLICATION
-            - SERVER
-            - SERVER_MASTER
-            - SERVER_SLAVE
-            - DEVICE_SYSTEM
-        deviceSystemExecutionMode:
-          type: string
-          description: |
-            * 'SETUP' - Runs the selected setup of an AWB projekt * 'AGENT' - Runs one or more agents from an AWB project
-          enum:
-            - SETUP
-            - AGENT
-        project:
-          type: string
-          description: The currently open project
-        setup:
-          type: string
-          description: The currently open project-setup
-      description: The Agent.Workbench execution state with its open project and the selected setup
 
     # Type SystemLoad
     SystemLoad:
