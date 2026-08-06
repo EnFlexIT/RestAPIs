@@ -304,6 +304,68 @@ paths:
               schema:
                 $ref: "#/components/schemas/SoftwareComponentList"
 
+  /logs:
+    get:
+      tags:
+        - admins
+      summary: Returns all available log files
+      description: Returns metadata for all stored log files.
+      operationId: getLogFiles
+      responses:
+        "200":
+          description: List of available log files
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 type: string
+                 format: date
+        "401": 
+          description: Authentication required
+        "403":
+          description: Access denied
+
+  /logs/archive:
+    get:
+      tags:
+        - admins
+      summary: Download multiple log files as ZIP archive
+      description: Downloads all log files within the specified date range as a ZIP archive.
+      operationId: downloadLogArchive
+      parameters:
+        - in: query
+          name: from
+          required: true
+          schema:
+            type: string
+          description: Start date (inclusive)
+
+        - in: query
+          name: to
+          required: true
+          schema:
+            type: string
+          description: End date (inclusive)
+      responses:
+        "200":
+          description: ZIP archive download successful
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: attachment; filename="logs.zip"
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        "401": 
+          description: Authentication required
+        "403":
+          description: Access denied
+        "500":
+          description: Failed to create log archive
 
   /eventLog:
     get:
