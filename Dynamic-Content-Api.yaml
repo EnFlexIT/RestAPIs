@@ -17,21 +17,190 @@ servers:
 
 # --- Api-Paths -------------------------------------------
 paths:
-  /menu/:
+
+  /menu:
+    post:
+      summary: Create a new menu
+      description: Creates a new menu and saves it in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItem'
+      responses:
+        "201":
+          description: Menu created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  menuID:
+                    type: integer
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable  
+          
     get:
       summary: Enables to build-up the menu structure
       description: Returns the menu structure available for the current user
       parameters:
-      - name: lang
-        in: query
-        description: the language locale to use
-        style: simple
-        schema:
-          type: string
+        - name: lang
+          in: query
+          description: the language locale to use
+          style: simple
+          schema:
+            type: string
       responses: 
-        "202":
+        "200":
           $ref: "#/components/responses/MenuArray"
+        "401":
+            description: Unauthorized
+        "503":
+            description: Service unavailable
+    
+  /menu/{menuID}:  
+    put:
+      summary: Enables to update a menu
+      parameters:
+        - name: menuID
+          in: path
+          required: true
+          description: The unique ID of the menu to be updated
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItem'
+      responses:
+        "200":
+          description: The menu was updated!
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable
+  
+    delete:
+      summary: Deletes the specified menu
+      description: Removes the menu, its submenus and all associated menu-content assignments from the database.
+      parameters:
+        - name: menuID
+          in: path
+          required: true
+          description: The unique ID of the menu to be deleted
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The menu was deleted
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable
 
+  /menu/{menuID}/contentElement/{elementID}:
+    put:
+      summary: Add the specified content element to the specified menu
+      
+      parameters:
+        - name: menuID
+          in: path
+          required: true
+          description: The unique ID of the menu
+          schema:
+            type: integer
+        - name: elementID
+          in: path
+          required: true
+          description: The unique ID of the content element
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Content element was added to the menu
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable
+          
+  /menu/{menuID}/permissions:
+    put:
+      summary: Enables to set the required rights to access the specified menu
+      parameters:
+        - name: menuID
+          in: path
+          required: true
+          description: The unique ID of the menu
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: The right was set
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable
+
+  /contentElement/:
+    post:
+      summary: Create new content
+      description: Creates a new content element
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContentRequest'
+      responses:
+        "201":
+          description: Content created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  elementID:
+                    type: integer
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable      
+    
   /content/{menuID}:
     get:
       summary: Returns the content for the specified ID
@@ -41,54 +210,88 @@ paths:
         in: path
         description: numeric ID of the content
         required: true
-        style: simple
-        explode: false
         schema:
           type: integer
       responses:
         "200":
           $ref: '#/components/responses/ContentArray'
-
-  /content/:
-    put:
-      summary: Enables to update content
-      requestBody:
-        content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/SiteContentListUpdate' 
-      responses:
-        "201":
-          description: Content was updated!
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "503":
+          description: Service unavailable      
 
   /contentElement/{elementID}:
     get:
-      summary: Will return the content element with the specified ID
-      description: Returns the content element with the specified ID
+      summary: Returns the content element for the specified ID
+      description: Returns the single content element corresponding to the specified ID.
       parameters:
       - name: elementID
         in: path
-        description: numeric ID of the content element
+        description: unique ID of the content element
         required: true
-        style: simple
-        explode: false
         schema:
           type: integer
-      responses: 
-        "202":
+      responses:
+        "200":
           $ref: "#/components/responses/ContentElement"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable
 
-  /contentElement/:
     put:
       summary: Enables to update content elements
+      parameters:
+        - name: elementID
+          in: path
+          required: true
+          description: The unique ID of the content element to update
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AbstractSiteContent' 
       responses:
-        "201":
-          description: The content element was updated!
+        "200":
+          description: The element was updated!
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable
+
+    delete:
+      summary: Deletes the specified content element
+      description: Removes the content element from the database and thus from all asociated menus.
+      parameters:
+        - name: elementID
+          in: path
+          required: true
+          description: The unique ID of the content element to delete
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The content element was deleted
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "503":
+          description: Service unavailable
 
 # ---------------------------------------------------------
 # --- Components  -----------------------------------------
@@ -157,16 +360,22 @@ components:
        - isHeadMenu
        - caption
 
-    SiteContentListUpdate:
+    CreateContentRequest:
       type: object
       properties:
         menuID:
           type: integer
-        contentList:
-          type: array
-          items:
-            $ref: '#/components/schemas/AbstractSiteContent'
-          maxItems: 100
+
+        position:
+          type: integer
+
+        content:
+          $ref: '#/components/schemas/AbstractSiteContent'
+
+      required:
+        - menuID
+        - position
+        - content
   
     SiteContentList:
       type: object
@@ -195,7 +404,7 @@ components:
         propertyName: AbstractSiteContentType
         mapping:
           SiteContentMedia: '#/components/schemas/SiteContentMedia'
-          AbstractSiteContentChart: '#/components/schemas/AbstractSiteContentChart'
+          AbstractChart: '#/components/schemas/AbstractChart'
           SiteContentProperties: '#/components/schemas/SiteContentProperties'
           SiteContentTable: '#/components/schemas/SiteContentTable'
 
@@ -235,38 +444,44 @@ components:
             - dataInB64
 
     # --- Schema definitions related to charts ------------
-    AbstractSiteContentChart:
+    SiteContentChart:
       allOf:
         - $ref: '#/components/schemas/AbstractSiteContent'
         - type: object
           properties:
-            title:
-              type: string
-            showLegend:
-              type: boolean            
-            xAxisLabel:
-              type: string
-            yAxisLabel:
-              type: string
-            dataSeries:
-              type: array
-              items: 
-                $ref: '#/components/schemas/DataSeries'
-          required:
-            - title
-            - dataSeries       
-          discriminator:
-            propertyName: AbstractSiteContentType
-            mapping:
-              SiteContentLineChart: '#/components/schemas/SiteContentLineChart'
-              SiteContentTimeSeriesChart: '#/components/schemas/SiteContentTimeSeriesChart'
-              SiteContentBarChart: '#/components/schemas/SiteContentBarChart'
-              SiteContentPieChart: '#/components/schemas/SiteContentPieChart'
-              SiteContentScatterPlot: '#/components/schemas/SiteContentScatterPlot'
+            chart:
+              $ref: '#/components/schemas/AbstractChart'    
+                    
+    AbstractChart:
+      type: object
+      properties:
+        title:
+          type: string
+        showLegend:
+          type: boolean            
+        xAxisLabel:
+          type: string
+        yAxisLabel:
+          type: string
+        dataSeries:
+          type: array
+          items: 
+            $ref: '#/components/schemas/DataSeries'
+      required:
+        - title
+        - dataSeries       
+      discriminator:
+        propertyName: ChartType
+        mapping:
+          LineChart: '#/components/schemas/LineChart'
+          TimeSeriesChart: '#/components/schemas/TimeSeriesChart'
+          BarChart: '#/components/schemas/BarChart'
+          PieChart: '#/components/schemas/PieChart'
+          ScatterPlot: '#/components/schemas/ScatterPlot'
 
-    SiteContentLineChart:
+    LineChart:
       allOf:
-        - $ref: '#/components/schemas/AbstractSiteContentChart'        
+        - $ref: '#/components/schemas/AbstractChart'        
         - type: object
           properties:
             secondaryYAxisLabel:
@@ -275,66 +490,99 @@ components:
             - xAxisLabel
             - yAxisLabel
 
-    SiteContentTimeSeriesChart:
+    TimeSeriesChart:
       allOf:
-        - $ref: '#/components/schemas/SiteContentLineChart'
+        - $ref: '#/components/schemas/LineChart'
         - type: object
           properties:
             timeFormat:
               type: string
         
-    SiteContentBarChart:
+    BarChart:
       allOf:
-        - $ref: '#/components/schemas/AbstractSiteContentChart'
+        - $ref: '#/components/schemas/AbstractChart'
+        - type: object
+          properties:
+            secondaryYAxisLabel:
+              type: string
           required:
             - xAxisLabel
             - yAxisLabel
     
-    SiteContentPieChart:
+    PieChart:
       allOf:
-        - $ref: '#/components/schemas/AbstractSiteContentChart'          
+        - $ref: '#/components/schemas/AbstractChart'          
         
-    SiteContentScatterPlot:
+    ScatterPlot:
       allOf:
-        - $ref: '#/components/schemas/AbstractSiteContentChart'
+        - $ref: '#/components/schemas/AbstractChart'
+        - type: object
+          properties:
+            secondaryYAxisLabel:
+              type: string
           required:
             - xAxisLabel
             - yAxisLabel
     
     DataSeries:
-        properties:
+        properties: 
           label:
             type: string
           secondaryYAxis:
             type: boolean
             default: false
-          entries:
-            type: array
-            items:
-              $ref: '#/components/schemas/AbstractValuePair'
-        required:
-          - label
-          - entries
-            
-    AbstractValuePair:
-        type: object    
-        properties:          
-          value:
-            type: number
-            format: double
         discriminator:
           propertyName: xValueType
           mapping:
-            Numeric: '#/components/schemas/ValuePairNumeric'
-            DateTime: '#/components/schemas/ValuePairDateTime'
-            Category: '#/components/schemas/ValuePairCategory'
+            DataSeriesWithValues: '#/components/schemas/DataSeriesWithValues'
+            DataSeriesWithReference: '#/components/schemas/DataSeriesWithReference'
+        required:
+          - label
+
+
+    DataSeriesWithValues:
+      allOf:
+        - $ref: '#/components/schemas/DataSeries'
+        - type: object
+          properties:
+            entries:
+              type: array
+              items:
+                $ref: '#/components/schemas/AbstractValueRow'
+          required:
+            - entries
+
+    DataSeriesWithReference:
+      allOf:
+        - $ref: '#/components/schemas/DataSeries'
+        - type: object
+          properties:
+            reference:
+              type: string
+      required:
+        - reference
+                          
+                                  
+    AbstractValueRow:
+        type: object    
+        properties:          
+          value:
+            type: array
+            items:
+              type: double
+        discriminator:
+          propertyName: xValueType
+          mapping:
+            Numeric: '#/components/schemas/ValueRowNumeric'
+            DateTime: '#/components/schemas/ValueRowDateTime'
+            Category: '#/components/schemas/ValueRowCategory'
         required:          
           - value
           - xValueType
           
-    ValuePairNumeric:
+    ValueRowNumeric:
       allOf:
-        - $ref: '#/components/schemas/AbstractValuePair'
+        - $ref: '#/components/schemas/AbstractValueRow'
         - type: object
           properties:
             xValue: 
@@ -343,9 +591,9 @@ components:
           required:
             - xValue
     
-    ValuePairDateTime:
+    ValueRowDateTime:
       allOf:
-        - $ref: '#/components/schemas/AbstractValuePair'
+        - $ref: '#/components/schemas/AbstractValueRow'
         - type: object
           properties:
             isoDateTime: 
@@ -353,9 +601,9 @@ components:
           required:
             - isoDateTime
             
-    ValuePairCategory:
+    ValueRowCategory:
       allOf:
-        - $ref: '#/components/schemas/AbstractValuePair'
+        - $ref: '#/components/schemas/AbstractValueRow'
         - type: object
           properties:
             category: 
