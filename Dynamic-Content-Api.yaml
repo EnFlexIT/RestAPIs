@@ -20,6 +20,7 @@ paths:
 
   /menu:
     post:
+      operationId: createMenu
       summary: Create a new menu
       description: Creates a new menu and saves it in the database
       requestBody:
@@ -48,6 +49,7 @@ paths:
           description: Service unavailable  
           
     get:
+      operationId: getMenus
       summary: Enables to build-up the menu structure
       description: Returns the menu structure available for the current user
       parameters:
@@ -67,6 +69,7 @@ paths:
     
   /menu/{menuID}:  
     put:
+      operationId: updateMenu
       summary: Enables to update a menu
       parameters:
         - name: menuID
@@ -94,6 +97,7 @@ paths:
           description: Service unavailable
   
     delete:
+      operationId: deleteMenu
       summary: Deletes the specified menu
       description: Removes the menu, its submenus and all associated menu-content assignments from the database.
       parameters:
@@ -117,6 +121,7 @@ paths:
 
   /menu/{menuID}/contentElement/{elementID}:
     put:
+      operationId: assignContentToMenu
       summary: Add the specified content element to the specified menu
       
       parameters:
@@ -146,6 +151,7 @@ paths:
           
   /menu/{menuID}/permissions:
     put:
+      operationId: updateMenuPermissions
       summary: Enables to set the required rights to access the specified menu
       parameters:
         - name: menuID
@@ -174,6 +180,7 @@ paths:
 
   /contentElement/:
     post:
+      operationId: createContentElement
       summary: Create new content
       description: Creates a new content element
       requestBody:
@@ -203,6 +210,7 @@ paths:
     
   /content/{menuID}:
     get:
+      operationId: getMenuContent
       summary: Returns the content for the specified ID
       description: Returns the list of content elements for the specified menu ID.
       parameters:
@@ -224,6 +232,7 @@ paths:
 
   /contentElement/{elementID}:
     get:
+      operationId: getContentElement
       summary: Returns the content element for the specified ID
       description: Returns the single content element corresponding to the specified ID.
       parameters:
@@ -246,6 +255,7 @@ paths:
           description: Service unavailable
 
     put:
+      operationId: updateContentElement
       summary: Enables to update content elements
       parameters:
         - name: elementID
@@ -272,6 +282,7 @@ paths:
           description: Service unavailable
 
     delete:
+      operationId: deleteContentElement
       summary: Deletes the specified content element
       description: Removes the content element from the database and thus from all asociated menus.
       parameters:
@@ -455,6 +466,8 @@ components:
     AbstractChart:
       type: object
       properties:
+        chartId:
+          type: integer
         title:
           type: string
         showLegend:
