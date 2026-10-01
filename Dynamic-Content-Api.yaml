@@ -56,7 +56,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  menuID:
+                  menuId:
                     type: integer
         "400":
           description: Invalid request
@@ -67,15 +67,15 @@ paths:
         "503":
           description: Service unavailable  
 
-  /menu/{menuID}:  
+  /menu/{menuId}:  
     put:
       operationId: updateMenu
       summary: Enables to update a menu
       parameters:
-        - name: menuID
+        - name: menuId
           in: path
           required: true
-          description: The unique ID of the menu to be updated
+          description: The unique Id of the menu to be updated
           schema:
             type: integer
       requestBody:
@@ -101,10 +101,10 @@ paths:
       summary: Deletes the specified menu
       description: Removes the menu, its submenus and all associated menu-content assignments from the database.
       parameters:
-        - name: menuID
+        - name: menuId
           in: path
           required: true
-          description: The unique ID of the menu to be deleted
+          description: The unique Id of the menu to be deleted
           schema:
             type: integer
       responses:
@@ -119,15 +119,15 @@ paths:
         "503":
           description: Service unavailable
 
-  /menu/{menuID}/permissions:
+  /menu/{menuId}/permissions:
     put:
       operationId: updateMenuPermissions
       summary: Enables to set the required rights to access the specified menu
       parameters:
-        - name: menuID
+        - name: menuId
           in: path
           required: true
-          description: The unique ID of the menu
+          description: The unique Id of the menu
           schema:
             type: integer
       requestBody:
@@ -149,15 +149,15 @@ paths:
           description: Service unavailable
 
 
-  /content/{menuID}:
+  /content/{menuId}:
     get:
       operationId: getMenuContent
-      summary: Returns the content for the specified ID
-      description: Returns the list of content elements for the specified menu ID.
+      summary: Returns the content for the specified Id
+      description: Returns the list of content elements for the specified menu Id.
       parameters:
-      - name: menuID
+      - name: menuId
         in: path
-        description: numeric ID of the content
+        description: numeric Id of the content
         required: true
         schema:
           type: integer
@@ -190,7 +190,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  elementID:
+                  elementId:
                     type: integer
         "400":
           description: Invalid request
@@ -202,15 +202,15 @@ paths:
           description: Service unavailable      
 
 
-  /contentElement/{elementID}:
+  /contentElement/{elementId}:
     get:
       operationId: getContentElement
-      summary: Returns the content element for the specified ID
-      description: Returns the single content element corresponding to the specified ID.
+      summary: Returns the content element for the specified Id
+      description: Returns the single content element corresponding to the specified Id.
       parameters:
-      - name: elementID
+      - name: elementId
         in: path
-        description: unique ID of the content element
+        description: unique Id of the content element
         required: true
         schema:
           type: integer
@@ -230,10 +230,10 @@ paths:
       operationId: updateContentElement
       summary: Enables to update content elements
       parameters:
-        - name: elementID
+        - name: elementId
           in: path
           required: true
-          description: The unique ID of the content element to update
+          description: The unique Id of the content element to update
           schema:
             type: integer
       requestBody:
@@ -260,10 +260,10 @@ paths:
       summary: Deletes the specified content element
       description: Removes the content element from the database and thus from all associated menus.
       parameters:
-        - name: elementID
+        - name: elementId
           in: path
           required: true
-          description: The unique ID of the content element to delete
+          description: The unique Id of the content element to delete
           schema:
             type: integer
       responses:
@@ -279,22 +279,22 @@ paths:
           description: Service unavailable
 
 
-  /menu/{menuID}/contentElement/{elementID}:
+  /menu/{menuId}/contentElement/{elementId}:
     put:
       operationId: assignContentToMenu
       summary: Add the content element to the specified menu
       
       parameters:
-        - name: menuID
+        - name: menuId
           in: path
           required: true
-          description: The unique ID of the menu
+          description: The unique Id of the menu
           schema:
             type: integer
-        - name: elementID
+        - name: elementId
           in: path
           required: true
-          description: The unique ID of the content element
+          description: The unique Id of the content element
           schema:
             type: integer
       requestBody:
@@ -322,16 +322,16 @@ paths:
       description: "Removes the assignment between the specified content element and menu. If this was the element's last menu assignment, the content element itself will be completely deleted. Subsequent items in the menu are automatically shifted to fill the gap."
       
       parameters:
-        - name: menuID
+        - name: menuId
           in: path
           required: true
-          description: The unique ID of the menu
+          description: The unique Id of the menu
           schema:
             type: integer
-        - name: elementID
+        - name: elementId
           in: path
           required: true
-          description: The unique ID of the content element
+          description: The unique Id of the content element
           schema:
             type: integer
       responses:
@@ -421,7 +421,7 @@ components:
     CreateContentRequest:
       type: object
       properties:
-        menuID:
+        menuId:
           type: integer
 
         position:
@@ -431,27 +431,27 @@ components:
           $ref: '#/components/schemas/AbstractSiteContent'
 
       required:
-        - menuID
+        - menuId
         - position
         - content
 
     UpdateContentAssignmentRequest:
       type: object
       required:
-        - elementID
-        - sourceMenuID
-        - targetMenuID
+        - elementId
+        - sourceMenuId
+        - targetMenuId
         - position
       properties:
-        elementID:
+        elementId:
           type: integer
-          description: Unique ID of the content element to be moved/reordered
-        sourceMenuID:
+          description: Unique Id of the content element to be moved/reordered
+        sourceMenuId:
           type: integer
-          description: Unique ID of the menu from which the content element is currently assigned
-        targetMenuID:
+          description: Unique Id of the menu from which the content element is currently assigned
+        targetMenuId:
           type: integer
-          description: Unique ID of the menu into which the content element should be assigned
+          description: Unique Id of the menu into which the content element should be assigned
         position:
           type: integer
           description: The new one-based target position within the target menu
@@ -468,9 +468,9 @@ components:
     MenuItem:
       type: object
       properties:
-        menuID:
+        menuId:
           type: integer
-        parentID:
+        parentId:
           type: integer
         isHeadMenu:
           type: boolean
@@ -478,14 +478,14 @@ components:
          type: integer
         caption:
           type: string
-        pathID:
+        pathId:
           type: string
         pathCaption:
           type: string
         pathPosition:
           type: string
       required:
-        - menuID
+        - menuId
         - position
         - isHeadMenu
         - caption
@@ -500,28 +500,30 @@ components:
       required:
         - "contentList"
 
+
     AbstractSiteContent:
       type: object
+      x-class-extra-annotation: "@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true, value = {\"abstractSiteContentType\"})"
+      required:
+        - editable
+        - uniqueContentId
+        - updatePeriodInSeconds
+        - abstractSiteContentType
+      discriminator:
+        propertyName: abstractSiteContentType
+        mapping:
+          SiteContentText: '#/components/schemas/SiteContentText'
+          SiteContentImage: '#/components/schemas/SiteContentImage'
+          SiteContentChart: '#/components/schemas/SiteContentChart'
+          SiteContentProperties: '#/components/schemas/SiteContentProperties'
+          SiteContentTable: '#/components/schemas/SiteContentTable'
       properties:
-        uniqueContentID:
+        uniqueContentId:
           type: integer
-        AbstractSiteContentType:
-          type: string
         editable:
           type: boolean
         updatePeriodInSeconds:
           type: integer
-      required:
-      - editable
-      - uniqueContentID
-      - updatePeriodInSeconds
-      discriminator:
-        propertyName: AbstractSiteContentType
-        mapping:
-          SiteContentMedia: '#/components/schemas/SiteContentMedia'
-          SiteContentChart: '#/components/schemas/SiteContentChart'
-          SiteContentProperties: '#/components/schemas/SiteContentProperties'
-          SiteContentTable: '#/components/schemas/SiteContentTable'
 
     SiteContentMedia:
       allOf:
@@ -532,11 +534,6 @@ components:
               type: string
           required:
             - mimeType
-          discriminator:
-            propertyName: SiteContentMediaType
-            mapping:
-              SiteContentText: '#/components/schemas/SiteContentText'
-              SiteContentImage: '#/components/schemas/SiteContentImage'
 
     SiteContentText:
       allOf:
@@ -649,7 +646,7 @@ components:
             type: boolean
             default: false
         discriminator:
-          propertyName: xValueType
+          propertyName: seriesType
           mapping:
             DataSeriesWithValues: '#/components/schemas/DataSeriesWithValues'
             DataSeriesWithReference: '#/components/schemas/DataSeriesWithReference'
@@ -726,7 +723,7 @@ components:
             category: 
               type: string
           required:
-            - xValue
+            - category
 
     # --- Schema definitions related to properties --------
     SiteContentProperties:
