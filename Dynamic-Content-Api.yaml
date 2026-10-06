@@ -526,11 +526,14 @@ components:
         updatePeriodInSeconds:
           type: integer
 
+
     SiteContentMedia:
       allOf:
         - $ref: '#/components/schemas/AbstractSiteContent'
         - type: object
           properties:
+            SiteContentMediaType:
+              type: string
             mimeType:
               type: string
           required:
