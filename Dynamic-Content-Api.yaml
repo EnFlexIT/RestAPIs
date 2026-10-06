@@ -516,7 +516,8 @@ components:
           SiteContentImage: '#/components/schemas/SiteContentImage'
           SiteContentChart: '#/components/schemas/SiteContentChart'
           SiteContentProperties: '#/components/schemas/SiteContentProperties'
-          SiteContentTable: '#/components/schemas/SiteContentTable'
+          SiteContentTableWithValues: '#/components/schemas/SiteContentTableWithValues'
+          SiteContentTableWithReference: '#/components/schemas/SiteContentTableWithReference'
       properties:
         uniqueContentId:
           type: integer
@@ -773,16 +774,26 @@ components:
             dataType:
               type: array
               items:
-                $ref: '#/components/schemas/ValueType'
+                $ref: '#/components/schemas/ValueType'       
+
+    SiteContentTableWithValues:
+      allOf:
+        - $ref: '#/components/schemas/SiteContentTable'  
+        - type: object
+          properties:
             data:
               type: array
               items:
                 $ref: '#/components/schemas/RowVector'
-          required:
-            - data
-            - dataType
-            - header
-
+                
+    SiteContentTableWithReference:       
+      allOf:
+        - $ref: '#/components/schemas/SiteContentTable'  
+        - type: object
+          properties:
+            reference:
+              type: string
+            
     RowVector:
       type: array
       items:
