@@ -15,13 +15,14 @@ servers:
   - url: http://localhost:8080
   - url: https://www.enflex.it
 
+  
 # --- Api-Paths -------------------------------------------
 paths:
 
   /menu:
     get:
       operationId: getMenus
-      summary: Enables to build-up the menu structure
+      summary: Enables to build-up the menu structure [User or Editor role]
       description: Returns the menu structure available for the current user
       parameters:
         - name: lang
@@ -40,14 +41,14 @@ paths:
 
     post:
       operationId: createMenu
-      summary: Create a new menu
+      summary: Create a new menu [Editor role]
       description: Creates a new menu and saves it in the database
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MenuItem'
+              $ref: '#/components/schemas/CreateMenuRequest'
       responses:
         "201":
           description: Menu created
@@ -70,7 +71,7 @@ paths:
   /menu/{menuId}:  
     put:
       operationId: updateMenu
-      summary: Enables to update a menu
+      summary: Enables to update a menu [Editor role]
       parameters:
         - name: menuId
           in: path
@@ -98,7 +99,7 @@ paths:
 
     delete:
       operationId: deleteMenu
-      summary: Deletes the specified menu
+      summary: Deletes the specified menu [Editor role]
       description: Removes the menu, its submenus and all associated menu-content assignments from the database.
       parameters:
         - name: menuId
@@ -122,7 +123,7 @@ paths:
   /menu/{menuId}/permissions:
     put:
       operationId: updateMenuPermissions
-      summary: Enables to set the required rights to access the specified menu
+      summary: Set access roles for a menu [Editor role]
       parameters:
         - name: menuId
           in: path
@@ -135,7 +136,10 @@ paths:
         content:
           application/json:
             schema:
-              type: string
+              type: array
+              items:
+                type: string
+                example: ["user", "editor"]
       responses:
         "200":
           description: The right was set
@@ -152,7 +156,7 @@ paths:
   /content/{menuId}:
     get:
       operationId: getMenuContent
-      summary: Returns the content for the specified Id
+      summary: Returns the content for the specified menuId  [User or Editor role]
       description: Returns the list of content elements for the specified menu Id.
       parameters:
       - name: menuId
@@ -174,7 +178,7 @@ paths:
   /contentElement:
     post:
       operationId: createContentElement
-      summary: Create new content
+      summary: Create new content [Editor role]
       description: Creates a new content element
       requestBody:
         required: true
@@ -205,7 +209,7 @@ paths:
   /contentElement/{elementId}:
     get:
       operationId: getContentElement
-      summary: Returns the content element for the specified Id
+      summary: Returns the content element for the specified Id [User role]
       description: Returns the single content element corresponding to the specified Id.
       parameters:
       - name: elementId
@@ -228,7 +232,7 @@ paths:
 
     put:
       operationId: updateContentElement
-      summary: Enables to update content elements
+      summary: Enables to update content elements [Editor role]
       parameters:
         - name: elementId
           in: path
@@ -257,7 +261,7 @@ paths:
 
     delete:
       operationId: deleteContentElement
-      summary: Deletes the specified content element
+      summary: Deletes the specified content element [Editor role]
       description: Removes the content element from the database and thus from all associated menus.
       parameters:
         - name: elementId
@@ -282,7 +286,7 @@ paths:
   /menu/{menuId}/contentElement/{elementId}:
     put:
       operationId: assignContentToMenu
-      summary: Add the content element to the specified menu
+      summary: Add the content element to the specified menu [Editor role]
       
       parameters:
         - name: menuId
@@ -318,7 +322,7 @@ paths:
 
     delete:
       operationId: removeAssignment
-      summary: Remove a content element from a menu
+      summary: Remove a content element from a menu [Editor role]
       description: "Removes the assignment between the specified content element and menu. If this was the element's last menu assignment, the content element itself will be completely deleted. Subsequent items in the menu are automatically shifted to fill the gap."
       
       parameters:
@@ -349,7 +353,7 @@ paths:
   /menu/contentElement/assignment:
     put:
       operationId: updateAssignmentAndPosition
-      summary: Update menu assignment and content position
+      summary: Update menu assignment and content position [Editor role]
       description: Reorders a content element within the same menu or moves it from a source menu to a target menu at a specified position.
       requestBody:
         required: true
@@ -403,6 +407,18 @@ components:
   # --- Schemas & type definition -------------------------
   schemas:
 
+    CreateMenuRequest:
+      type: object
+      properties:
+        allowedRoles:
+          type: array
+          items:
+            type: string
+          description: List of group roles allowed to access this menu item
+          example: ["user", "editor"]
+        content: 
+          $ref: '#/components/schemas/MenuItem'
+    
     AssignContentToMenuRequest:
       type: object
       properties:
@@ -496,10 +512,21 @@ components:
         contentList:
           type: array
           items:
-            $ref: '#/components/schemas/AbstractSiteContent'
+            $ref: '#/components/schemas/SiteContentWithMenuPosition'
       required:
         - "contentList"
 
+    SiteContentWithMenuPosition:
+      type: object
+      required:
+        - position
+        - content
+      properties:
+        position:
+          type: integer
+          description: The position of the content element within this specific menu.
+        content:
+          $ref: '#/components/schemas/AbstractSiteContent'
 
     AbstractSiteContent:
       type: object
@@ -532,8 +559,6 @@ components:
         - $ref: '#/components/schemas/AbstractSiteContent'
         - type: object
           properties:
-            SiteContentMediaType:
-              type: string
             mimeType:
               type: string
           required:
