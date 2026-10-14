@@ -22,8 +22,8 @@ paths:
   /menu:
     get:
       operationId: getMenus
-      summary: Enables to build-up the menu structure [User or Editor role]
-      description: Returns the menu structure available for the current user
+      summary: Get available menu structure
+      description: Returns the menu structure available for the current user, optionally filtered by a specific role.
       parameters:
         - name: lang
           in: query
@@ -31,6 +31,11 @@ paths:
           style: simple
           schema:
             type: string
+        - name: forRole
+          in: query
+          schema:
+            type: string
+          description: Optional parameter to only receive menus associated to that role
       responses: 
         "200":
           $ref: '#/components/responses/MenuArray'
@@ -41,8 +46,8 @@ paths:
 
     post:
       operationId: createMenu
-      summary: Create a new menu [Editor role]
-      description: Creates a new menu and saves it in the database
+      summary: Create a new menu
+      description: Creates a new menu and persists it in the database
       requestBody:
         required: true
         content:
@@ -71,7 +76,8 @@ paths:
   /menu/{menuId}:  
     put:
       operationId: updateMenu
-      summary: Enables to update a menu [Editor role]
+      summary: Update a menu
+      description: Updates the properties of the specified menu.
       parameters:
         - name: menuId
           in: path
@@ -99,8 +105,8 @@ paths:
 
     delete:
       operationId: deleteMenu
-      summary: Deletes the specified menu [Editor role]
-      description: Removes the menu, its submenus and all associated menu-content assignments from the database.
+      summary: Delete a menu
+      description: Removes the menu, its submenus, and all associated menu-content assignments from the database. Orphaned content will be deleted.
       parameters:
         - name: menuId
           in: path
@@ -123,7 +129,8 @@ paths:
   /menu/{menuId}/permissions:
     put:
       operationId: updateMenuPermissions
-      summary: Set access roles for a menu [Editor role]
+      summary: Set menu access roles
+      description: Sets the allowed access roles for the specified menu.
       parameters:
         - name: menuId
           in: path
@@ -156,8 +163,8 @@ paths:
   /content/{menuId}:
     get:
       operationId: getMenuContent
-      summary: Returns the content for the specified menuId  [User or Editor role]
-      description: Returns the list of content elements for the specified menu Id.
+      summary: Get menu content
+      description: Returns the list of content elements associated with the specified menu ID.
       parameters:
       - name: menuId
         in: path
@@ -178,8 +185,8 @@ paths:
   /contentElement:
     post:
       operationId: createContentElement
-      summary: Create new content [Editor role]
-      description: Creates a new content element
+      summary: Create a content element
+      description: Creates a new content element in the system.
       requestBody:
         required: true
         content:
@@ -209,8 +216,8 @@ paths:
   /contentElement/{elementId}:
     get:
       operationId: getContentElement
-      summary: Returns the content element for the specified Id [User role]
-      description: Returns the single content element corresponding to the specified Id.
+      summary: Get a content element
+      description: Returns a single content element corresponding to the specified ID.
       parameters:
       - name: elementId
         in: path
@@ -232,7 +239,8 @@ paths:
 
     put:
       operationId: updateContentElement
-      summary: Enables to update content elements [Editor role]
+      summary: Update a content element
+      description: Updates the properties of the specified content element.
       parameters:
         - name: elementId
           in: path
@@ -261,8 +269,8 @@ paths:
 
     delete:
       operationId: deleteContentElement
-      summary: Deletes the specified content element [Editor role]
-      description: Removes the content element from the database and thus from all associated menus.
+      summary: Delete a content element
+      description: Removes the content element from the database and detaches it from all associated menus.
       parameters:
         - name: elementId
           in: path
@@ -286,8 +294,8 @@ paths:
   /menu/{menuId}/contentElement/{elementId}:
     put:
       operationId: assignContentToMenu
-      summary: Add the content element to the specified menu [Editor role]
-      
+      summary: Assign content to a menu
+      description: Adds an existing content element to the specified menu.
       parameters:
         - name: menuId
           in: path
@@ -322,8 +330,8 @@ paths:
 
     delete:
       operationId: removeAssignment
-      summary: Remove a content element from a menu [Editor role]
-      description: "Removes the assignment between the specified content element and menu. If this was the element's last menu assignment, the content element itself will be completely deleted. Subsequent items in the menu are automatically shifted to fill the gap."
+      summary: Remove content assignment
+      description: Removes the assignment between the specified content element and menu. If this was the element's last menu assignment, the content element itself is automatically deleted, and subsequent items shift to fill the gap.
       
       parameters:
         - name: menuId
@@ -353,8 +361,8 @@ paths:
   /menu/contentElement/assignment:
     put:
       operationId: updateAssignmentAndPosition
-      summary: Update menu assignment and content position [Editor role]
-      description: Reorders a content element within the same menu or moves it from a source menu to a target menu at a specified position.
+      summary: Update assignment and position
+      description: Reorders a content element within the same menu or moves it to a target menu at a specified position.
       requestBody:
         required: true
         content:
