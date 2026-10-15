@@ -138,6 +138,23 @@ paths:
       responses:
         "200":
           description: successfully logged the user out
+          
+  /user/roles:
+    get:
+      tags:
+        - user
+      summary: Get all roles the client is associated with
+      operationId: getUserRoles
+      responses:
+        "200":
+          description: successfully fetched the requested user roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string  
+
 
   /app/settings/get:
     get:
